@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Run relative to this script's own directory (part1/), regardless of where
+# it's invoked from -- matters now that this got moved out of the repo root.
+cd "$(dirname "$0")"
+
 printf 'ip,continent,country,site,min_rtt_ms,avg_rtt_ms,max_rtt_ms,latitude,longitude\n' > results.csv
 
 add_row () {
@@ -44,7 +48,7 @@ my_ip=$(curl -s --max-time 10 https://api.ipify.org)
 add_row "$my_ip" "North America" "USA" "West Lafayette"
 
 #other ips
-tail -n +2 ips.csv | while IFS=, read -r ip port speed continent country site provider
+tail -n +2 ../ips.csv | while IFS=, read -r ip port speed continent country site provider
 do
   add_row "$ip" "$continent" "$country" "$site"
 done

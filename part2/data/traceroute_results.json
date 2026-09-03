@@ -1,0 +1,773 @@
+{
+  "reached": [
+    {
+      "target": "185.152.67.2",
+      "resolved_ip": "185.152.67.2",
+      "reached": true,
+      "hops": [
+        {
+          "number": 1,
+          "address": "172.18.16.1",
+          "probe_rtts_ms": [
+            0.695,
+            0.706,
+            0.704
+          ],
+          "min_rtt_ms": 0.695
+        },
+        {
+          "number": 2,
+          "address": "10.175.1.254",
+          "probe_rtts_ms": [
+            6.061,
+            6.059,
+            6.058
+          ],
+          "min_rtt_ms": 6.058
+        },
+        {
+          "number": 3,
+          "address": "10.35.42.1",
+          "probe_rtts_ms": [
+            19.802,
+            19.8,
+            19.799
+          ],
+          "min_rtt_ms": 19.799
+        },
+        {
+          "number": 4,
+          "address": "64.125.79.137",
+          "probe_rtts_ms": [
+            19.797,
+            19.795,
+            19.795
+          ],
+          "min_rtt_ms": 19.795
+        },
+        {
+          "number": 5,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 6,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 7,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 8,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 9,
+          "address": "173.167.58.41",
+          "probe_rtts_ms": [
+            28.05,
+            28.049,
+            28.047
+          ],
+          "min_rtt_ms": 28.047
+        },
+        {
+          "number": 10,
+          "address": "96.110.33.6",
+          "probe_rtts_ms": [
+            68.349,
+            69.304,
+            69.276
+          ],
+          "min_rtt_ms": 68.349
+        },
+        {
+          "number": 11,
+          "address": "50.248.116.138",
+          "probe_rtts_ms": [
+            69.268,
+            70.333,
+            69.273
+          ],
+          "min_rtt_ms": 69.268
+        },
+        {
+          "number": 12,
+          "address": "79.127.195.164",
+          "probe_rtts_ms": [
+            69.77,
+            69.767,
+            70.846
+          ],
+          "min_rtt_ms": 69.767
+        },
+        {
+          "number": 13,
+          "address": "185.152.67.2",
+          "probe_rtts_ms": [
+            69.373,
+            69.049,
+            69.023
+          ],
+          "min_rtt_ms": 69.023
+        }
+      ]
+    },
+    {
+      "target": "89.187.160.1",
+      "resolved_ip": "89.187.160.1",
+      "reached": true,
+      "hops": [
+        {
+          "number": 1,
+          "address": "172.18.16.1",
+          "probe_rtts_ms": [
+            0.818,
+            0.802,
+            0.802
+          ],
+          "min_rtt_ms": 0.802
+        },
+        {
+          "number": 2,
+          "address": "10.175.1.254",
+          "probe_rtts_ms": [
+            4.034,
+            4.033,
+            4.032
+          ],
+          "min_rtt_ms": 4.032
+        },
+        {
+          "number": 3,
+          "address": "10.35.42.1",
+          "probe_rtts_ms": [
+            17.789,
+            17.787,
+            17.786
+          ],
+          "min_rtt_ms": 17.786
+        },
+        {
+          "number": 4,
+          "address": "64.125.79.137",
+          "probe_rtts_ms": [
+            18.149,
+            19.332,
+            19.358
+          ],
+          "min_rtt_ms": 18.149
+        },
+        {
+          "number": 5,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 6,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 7,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 8,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 9,
+          "address": "63.220.192.158",
+          "probe_rtts_ms": [
+            26.646,
+            26.36,
+            25.185
+          ],
+          "min_rtt_ms": 25.185
+        },
+        {
+          "number": 10,
+          "address": "63.218.250.210",
+          "probe_rtts_ms": [
+            174.651,
+            173.792,
+            173.763
+          ],
+          "min_rtt_ms": 173.763
+        },
+        {
+          "number": 11,
+          "address": "63.216.242.194",
+          "probe_rtts_ms": [
+            179.774,
+            379.231,
+            354.909
+          ],
+          "min_rtt_ms": 179.774
+        },
+        {
+          "number": 12,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 13,
+          "address": "89.187.160.1",
+          "probe_rtts_ms": [
+            382.449,
+            202.628,
+            407.407
+          ],
+          "min_rtt_ms": 202.628
+        }
+      ]
+    },
+    {
+      "target": "105.235.237.2",
+      "resolved_ip": "105.235.237.2",
+      "reached": true,
+      "hops": [
+        {
+          "number": 1,
+          "address": "172.18.16.1",
+          "probe_rtts_ms": [
+            0.876,
+            0.859,
+            0.858
+          ],
+          "min_rtt_ms": 0.858
+        },
+        {
+          "number": 2,
+          "address": "10.175.1.254",
+          "probe_rtts_ms": [
+            3.373,
+            3.371,
+            3.37
+          ],
+          "min_rtt_ms": 3.37
+        },
+        {
+          "number": 3,
+          "address": "10.35.42.1",
+          "probe_rtts_ms": [
+            18.204,
+            18.203,
+            18.201
+          ],
+          "min_rtt_ms": 18.201
+        },
+        {
+          "number": 4,
+          "address": "64.125.79.137",
+          "probe_rtts_ms": [
+            19.302,
+            19.301,
+            19.3
+          ],
+          "min_rtt_ms": 19.3
+        },
+        {
+          "number": 5,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 6,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 7,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 8,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 9,
+          "address": "184.105.26.189",
+          "probe_rtts_ms": [
+            26.473,
+            25.436,
+            26.519
+          ],
+          "min_rtt_ms": 25.436
+        },
+        {
+          "number": 10,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 11,
+          "address": "184.105.222.174",
+          "probe_rtts_ms": [
+            43.807,
+            44.748
+          ],
+          "min_rtt_ms": 43.807
+        },
+        {
+          "number": 12,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 13,
+          "address": "184.105.64.122",
+          "probe_rtts_ms": [
+            50.113,
+            50.111,
+            50.108
+          ],
+          "min_rtt_ms": 50.108
+        },
+        {
+          "number": 14,
+          "address": "184.104.196.78",
+          "probe_rtts_ms": [
+            127.746,
+            127.596,
+            127.563
+          ],
+          "min_rtt_ms": 127.563
+        },
+        {
+          "number": 15,
+          "address": "184.105.222.68",
+          "probe_rtts_ms": [
+            141.339,
+            142.837,
+            142.81
+          ],
+          "min_rtt_ms": 141.339
+        },
+        {
+          "number": 16,
+          "address": "184.104.188.210",
+          "probe_rtts_ms": [
+            259.134,
+            249.255,
+            249.222
+          ],
+          "min_rtt_ms": 249.222
+        },
+        {
+          "number": 17,
+          "address": "184.104.224.194",
+          "probe_rtts_ms": [
+            249.028,
+            248.998,
+            248.991
+          ],
+          "min_rtt_ms": 248.991
+        },
+        {
+          "number": 18,
+          "address": "197.214.66.58",
+          "probe_rtts_ms": [
+            269.557,
+            267.365,
+            267.342
+          ],
+          "min_rtt_ms": 267.342
+        },
+        {
+          "number": 19,
+          "address": "197.214.64.209",
+          "probe_rtts_ms": [
+            266.149,
+            271.303,
+            272.288
+          ],
+          "min_rtt_ms": 266.149
+        },
+        {
+          "number": 20,
+          "address": "105.235.239.198",
+          "probe_rtts_ms": [
+            272.412,
+            426.171,
+            411.619
+          ],
+          "min_rtt_ms": 272.412
+        },
+        {
+          "number": 21,
+          "address": "105.235.237.197",
+          "probe_rtts_ms": [
+            411.453,
+            405.255,
+            405.207
+          ],
+          "min_rtt_ms": 405.207
+        },
+        {
+          "number": 22,
+          "address": "105.235.237.2",
+          "probe_rtts_ms": [
+            405.324,
+            307.159,
+            307.124
+          ],
+          "min_rtt_ms": 307.124
+        }
+      ]
+    },
+    {
+      "target": "103.146.200.98",
+      "resolved_ip": "103.146.200.98",
+      "reached": true,
+      "hops": [
+        {
+          "number": 1,
+          "address": "172.18.16.1",
+          "probe_rtts_ms": [
+            0.991,
+            0.967,
+            0.964
+          ],
+          "min_rtt_ms": 0.964
+        },
+        {
+          "number": 2,
+          "address": "10.175.1.254",
+          "probe_rtts_ms": [
+            23.304,
+            23.303,
+            23.301
+          ],
+          "min_rtt_ms": 23.301
+        },
+        {
+          "number": 3,
+          "address": "10.35.42.1",
+          "probe_rtts_ms": [
+            36.42,
+            36.419,
+            36.417
+          ],
+          "min_rtt_ms": 36.417
+        },
+        {
+          "number": 4,
+          "address": "64.125.79.137",
+          "probe_rtts_ms": [
+            36.525,
+            37.553,
+            37.551
+          ],
+          "min_rtt_ms": 36.525
+        },
+        {
+          "number": 5,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 6,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 7,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 8,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 9,
+          "address": "64.125.28.46",
+          "probe_rtts_ms": [
+            66.348,
+            66.345,
+            65.469
+          ],
+          "min_rtt_ms": 65.469
+        },
+        {
+          "number": 10,
+          "address": "64.125.27.39",
+          "probe_rtts_ms": [
+            60.291,
+            61.072,
+            62.451
+          ],
+          "min_rtt_ms": 60.291
+        },
+        {
+          "number": 11,
+          "address": "64.125.35.198",
+          "probe_rtts_ms": [
+            62.293,
+            62.289,
+            64.634
+          ],
+          "min_rtt_ms": 62.289
+        },
+        {
+          "number": 12,
+          "address": "203.208.149.61",
+          "probe_rtts_ms": [
+            118.446,
+            118.39,
+            118.387
+          ],
+          "min_rtt_ms": 118.387
+        },
+        {
+          "number": 13,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 14,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 15,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 16,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 17,
+          "address": "220.101.73.90",
+          "probe_rtts_ms": [
+            275.936,
+            275.933,
+            274.07
+          ],
+          "min_rtt_ms": 274.07
+        },
+        {
+          "number": 18,
+          "address": "10.215.1.33",
+          "probe_rtts_ms": [
+            314.667,
+            317.444,
+            311.425
+          ],
+          "min_rtt_ms": 311.425
+        },
+        {
+          "number": 19,
+          "address": "10.215.1.1",
+          "probe_rtts_ms": [
+            311.211,
+            311.206,
+            314.559
+          ],
+          "min_rtt_ms": 311.206
+        },
+        {
+          "number": 20,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 21,
+          "address": "43.245.56.130",
+          "probe_rtts_ms": [
+            312.925,
+            314.178,
+            314.134
+          ],
+          "min_rtt_ms": 312.925
+        },
+        {
+          "number": 22,
+          "address": "103.146.200.98",
+          "probe_rtts_ms": [
+            312.971,
+            310.63,
+            454.308
+          ],
+          "min_rtt_ms": 310.63
+        }
+      ]
+    },
+    {
+      "target": "speed2.fiberby.dk",
+      "resolved_ip": "193.106.166.153",
+      "reached": true,
+      "hops": [
+        {
+          "number": 1,
+          "address": "172.18.16.1",
+          "probe_rtts_ms": [
+            1.256,
+            1.237,
+            1.235
+          ],
+          "min_rtt_ms": 1.235
+        },
+        {
+          "number": 2,
+          "address": "10.175.1.254",
+          "probe_rtts_ms": [
+            7.129,
+            7.127,
+            7.125
+          ],
+          "min_rtt_ms": 7.125
+        },
+        {
+          "number": 3,
+          "address": "10.35.42.1",
+          "probe_rtts_ms": [
+            21.091,
+            21.089,
+            21.087
+          ],
+          "min_rtt_ms": 21.087
+        },
+        {
+          "number": 4,
+          "address": "64.125.79.137",
+          "probe_rtts_ms": [
+            22.777,
+            22.776,
+            22.773
+          ],
+          "min_rtt_ms": 22.773
+        },
+        {
+          "number": 5,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 6,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 7,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 8,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 9,
+          "address": null,
+          "probe_rtts_ms": [],
+          "min_rtt_ms": null
+        },
+        {
+          "number": 10,
+          "address": "171.75.8.201",
+          "probe_rtts_ms": [
+            296.678,
+            133.786,
+            140.608
+          ],
+          "min_rtt_ms": 133.786
+        },
+        {
+          "number": 11,
+          "address": "212.73.252.158",
+          "probe_rtts_ms": [
+            340.644,
+            133.826,
+            393.784
+          ],
+          "min_rtt_ms": 133.826
+        },
+        {
+          "number": 12,
+          "address": "185.10.220.230",
+          "probe_rtts_ms": [
+            140.664,
+            341.845,
+            132.692
+          ],
+          "min_rtt_ms": 132.692
+        },
+        {
+          "number": 13,
+          "address": "185.10.221.7",
+          "probe_rtts_ms": [
+            178.332,
+            178.302,
+            178.299
+          ],
+          "min_rtt_ms": 178.299
+        },
+        {
+          "number": 14,
+          "address": "185.10.220.233",
+          "probe_rtts_ms": [
+            178.428,
+            177.286,
+            177.271
+          ],
+          "min_rtt_ms": 177.271
+        },
+        {
+          "number": 15,
+          "address": "193.106.166.153",
+          "probe_rtts_ms": [
+            177.49,
+            171.241,
+            171.222
+          ],
+          "min_rtt_ms": 171.222
+        }
+      ]
+    }
+  ],
+  "skipped": []
+}
