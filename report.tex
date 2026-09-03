@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% ---------- Replace these values ----------
+\newcommand{\studentname}{Your Name}
+\newcommand{\studentid}{Your Purdue ID}
+\newcommand{\repolink}{https://github.com/YOUR-USERNAME/YOUR-REPOSITORY}
+
+% Use this command for links to specific files or line ranges in the repository.
+% Example: \codelink{Ping collection code}{src/collect.py\#L20-L75}
+\newcommand{\codelink}[2]{\href{\repolink/blob/main/#2}{#1}}
+
+% Displays an image if it exists; otherwise displays a labeled placeholder.
+\newcommand{\plotplaceholder}[2]{%
+    \IfFileExists{#1}{%
+        \includegraphics[width=0.88\textwidth]{#1}%
+    }{%
+        \fbox{\parbox[c][2.7in][c]{0.82\textwidth}{\centering
+        Plot placeholder\\[0.5em]
+        Save the finished plot as \texttt{\detokenize{#1}}}}%
+    }%
+}
+
+\title{Assignment 1: Network Latencies, Ping, and Traceroute}
+\author{\studentname\\\studentid}
+\date{CS 422 -- Fall 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Repository}
+
+The complete source code, input data, and instructions needed to reproduce the
+experiments and plots are available at:
+\begin{center}
+    \url{\repolink}
+\end{center}
+
+% Briefly state the command used to reproduce all results.
+\noindent Reproduction command:
+\begin{verbatim}
+./run_all.sh
+\end{verbatim}
+
+\section{Ping Test and Round-Trip Time}
+
+\subsection{Method}
+
+% Describe:
+% 1. Where the destination IP addresses came from.
+% 2. How many ping packets were sent to each destination.
+% 3. How non-responsive destinations were handled.
+% 4. How latitude and longitude were obtained (for example, ip-api.com).
+% 5. How geographic distance was calculated.
+
+We tested every destination listed in the provided IP-address file, along with
+our own public IP address. [Describe the rest of the procedure here.]
+
+The code used to collect and process the ping measurements is available here:
+\codelink{ping collection and RTT calculation}{PATH/TO/FILE\#L1-L99}.
+
+\subsection{Results}
+
+% Either include the full table or summarize it and point to results.csv.
+\begin{table}[H]
+    \centering
+    \caption{Example format for selected ping results.}
+    \label{tab:ping-results}
+    \begin{tabular}{lrrrr}
+        \toprule
+        Destination IP & Distance (km) & Min RTT (ms) & Avg RTT (ms) & Max RTT (ms) \\
+        \midrule
+        % 192.0.2.1 & 0000 & 00.0 & 00.0 & 00.0 \\
+        \multicolumn{5}{c}{Add results here} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Distance versus RTT}
+
+\begin{figure}[H]
+    \centering
+    \plotplaceholder{figures/distance_vs_rtt.pdf}{Distance versus RTT}
+    \caption{Geographic distance from West Lafayette, Indiana, versus
+    round-trip time. Each point represents one destination IP address.}
+    \label{fig:distance-rtt}
+\end{figure}
+
+The plotting code is available here:
+\codelink{distance-versus-RTT plot}{PATH/TO/FILE\#L1-L99}.
+
+\subsection{Discussion}
+
+% Answer all parts explicitly:
+% - Does RTT generally increase with geographic distance?
+% - What does the minimum RTT tell you?
+% - What does the maximum RTT tell you?
+% - What network conditions explain variation or outliers?
+
+[Explain how distance relates to RTT. Discuss propagation delay, routing,
+congestion, queueing, processing delay, and any important outliers. Explain
+what the minimum and maximum RTT values convey.]
+
+\section{Latency Breakdown}
+
+\subsection{Method}
+
+% List the five randomly chosen destination IP addresses.
+\begin{table}[H]
+    \centering
+    \caption{Five destinations selected for traceroute analysis.}
+    \label{tab:traceroute-destinations}
+    \begin{tabular}{lll}
+        \toprule
+        Destination IP & Site/Country & Selection notes \\
+        \midrule
+        % 192.0.2.1 & City, Country & Randomly selected \\
+        \multicolumn{3}{c}{Add five destinations here} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+[Describe how traceroute was run, how RTT was obtained for each intermediate
+hop, and how non-responsive hops marked with * were filtered or recorded.]
+
+The traceroute collection code is available here:
+\codelink{traceroute collection and parsing}{PATH/TO/FILE\#L1-L99}.
+
+\subsection{Per-Hop Latency Breakdown}
+
+\begin{figure}[H]
+    \centering
+    \plotplaceholder{figures/hop_latency_breakdown.pdf}{Per-hop latency breakdown}
+    \caption{Stacked latency breakdown for the responsive hops along the paths
+    to the five selected destinations.}
+    \label{fig:hop-breakdown}
+\end{figure}
+
+The plotting code is available here:
+\codelink{stacked per-hop latency chart}{PATH/TO/FILE\#L1-L99}.
+
+\subsection{Hop Count versus RTT}
+
+\begin{figure}[H]
+    \centering
+    \plotplaceholder{figures/hop_count_vs_rtt.pdf}{Hop count versus RTT}
+    \caption{Hop count versus destination RTT. Each point represents one of the
+    five selected destination IP addresses.}
+    \label{fig:hops-rtt}
+\end{figure}
+
+The plotting code is available here:
+\codelink{hop-count-versus-RTT plot}{PATH/TO/FILE\#L1-L99}.
+
+\subsection{Discussion}
+
+% Answer all parts explicitly:
+% - What patterns appear in the stacked bar chart?
+% - Does RTT generally increase with hop count?
+% - Why can destinations with similar hop counts have different RTTs?
+% - How did non-responsive hops affect the analysis?
+
+[Explain the major observations from both plots and discuss how hop count
+relates to RTT. Mention relevant effects such as geographic path length,
+link speed, routing, congestion, and routers that do not answer ICMP probes.]
+
+\section{Conclusion}
+
+[Briefly summarize the main relationship observed among geographic distance,
+hop count, and RTT.]
+
+\end{document}
