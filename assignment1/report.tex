@@ -17,7 +17,7 @@
 % ---------- Replace these values ----------
 \newcommand{\studentname}{Your Name}
 \newcommand{\studentid}{Your Purdue ID}
-\newcommand{\repolink}{https://github.com/YOUR-USERNAME/YOUR-REPOSITORY}
+\newcommand{\repolink}{https://github.com/RohMalpani/CS422Assignments}
 
 % Use this command for links to specific files or line ranges in the repository.
 % Example: \codelink{Ping collection code}{src/collect.py\#L20-L75}
@@ -119,26 +119,51 @@ what the minimum and maximum RTT values convey.]
 
 \subsection{Method}
 
-% List the five randomly chosen destination IP addresses.
+Five destinations were selected uniformly at random (seed 42, for
+reproducibility) from the full iperf3 server list.
+
 \begin{table}[H]
     \centering
     \caption{Five destinations selected for traceroute analysis.}
     \label{tab:traceroute-destinations}
     \begin{tabular}{lll}
         \toprule
-        Destination IP & Site/Country & Selection notes \\
+        Destination IP & Site/Country & Outcome \\
         \midrule
-        % 192.0.2.1 & City, Country & Randomly selected \\
-        \multicolumn{3}{c}{Add five destinations here} \\
+        185.152.67.2 & Los Angeles, US & Non-responsive after retry (skipped) \\
+        89.187.160.1 & Tokyo, JP & Reached, 13 hops \\
+        105.235.237.2 & Bata, GQ & Reached, 22 hops \\
+        103.146.200.98 & Port Moresby, PG & Reached, 22 hops \\
+        speed2.fiberby.dk & Copenhagen, DK & Reached, 15 hops \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-[Describe how traceroute was run, how RTT was obtained for each intermediate
-hop, and how non-responsive hops marked with * were filtered or recorded.]
+Traceroute was run in ICMP-echo mode (\texttt{-I}), sending 3 probes per hop
+with a 2-second per-probe timeout, up to 30 hops. Per-hop RTT is the
+\emph{minimum} of the responsive probes at that hop -- this approximates the
+hop's propagation/processing floor and is less skewed by one transient
+queuing delay than an average would be. A hop where all 3 probes time out
+(shown as \texttt{* * *}) has no RTT value; it is still counted toward hop
+count but excluded from the per-hop RTT data, since traceroute gives us
+nothing to measure there. A destination itself is considered non-responsive,
+and skipped, only if a full traceroute attempt is retried once and still
+never receives a reply from the destination IP -- this distinguishes a
+genuinely dead/filtered destination from a one-off transient failure (both
+were observed during testing; see repo \texttt{DECISIONS.md} for detail).
+Initial testing with the default UDP-mode traceroute under-reported
+reachability: 3 of the first 5 randomly-selected destinations appeared
+non-responsive, yet a plain \texttt{ping} showed all 3 were alive -- they (or
+a router along the path) silently drop the ICMP "port unreachable" reply
+UDP-mode traceroute depends on, while answering ICMP echo normally. Switching
+to ICMP-mode traceroute resolved this.
 
-The traceroute collection code is available here:
-\codelink{traceroute collection and parsing}{PATH/TO/FILE\#L1-L99}.
+The traceroute collection and parsing code is available here:
+\codelink{traceroute invocation, parsing, and reachability check}{assignment1/part2/traceroute\_runner.py\#L47-L153},
+with the retry/skip logic here:
+\codelink{batch runner with retry-once-before-skip}{assignment1/part2/batch\_traceroute.py\#L21-L37}.
+Target selection is here:
+\codelink{seeded random target selection}{assignment1/part2/select\_targets.py\#L1-L76}.
 
 \subsection{Per-Hop Latency Breakdown}
 
@@ -151,7 +176,9 @@ The traceroute collection code is available here:
 \end{figure}
 
 The plotting code is available here:
-\codelink{stacked per-hop latency chart}{PATH/TO/FILE\#L1-L99}.
+\codelink{stacked per-hop latency chart}{assignment1/part2/plotting.py\#L47-L77},
+including how incremental (not cumulative) latency is computed:
+\codelink{incremental\_latencies()}{assignment1/part2/plotting.py\#L25-L45}.
 
 \subsection{Hop Count versus RTT}
 
@@ -164,19 +191,53 @@ The plotting code is available here:
 \end{figure}
 
 The plotting code is available here:
-\codelink{hop-count-versus-RTT plot}{PATH/TO/FILE\#L1-L99}.
+\codelink{hop-count-versus-RTT plot}{assignment1/part2/plotting.py\#L78-L97}.
 
 \subsection{Discussion}
 
-% Answer all parts explicitly:
-% - What patterns appear in the stacked bar chart?
-% - Does RTT generally increase with hop count?
-% - Why can destinations with similar hop counts have different RTTs?
-% - How did non-responsive hops affect the analysis?
+\textbf{Pattern in the stacked bar chart.} Across all four reached
+destinations, the first four hops -- our local network and ISP egress in
+West Lafayette -- are uniformly cheap (under 25\,ms) regardless of which
+destination is being traced, since that segment of the path is identical for
+every trace. Latency then accumulates almost entirely in one or two
+``long-haul'' hops rather than being spread evenly across the path. For
+example, the trace to Tokyo (89.187.160.1) jumps from 27\,ms at hop 9 to
+190\,ms at hop 10 -- a single 163\,ms increment, roughly 84\% of the entire
+194\,ms path RTT, almost certainly the trans-Pacific submarine link. The
+Copenhagen trace shows the same shape at hop 10 (a jump from the last known
+21\,ms up to 133\,ms), consistent with a trans-Atlantic hop. This confirms
+that a stacked-bar breakdown is genuinely more informative than the raw
+scatter alone: it shows \emph{where} along the path the latency is coming
+from, not just the total.
 
-[Explain the major observations from both plots and discuss how hop count
-relates to RTT. Mention relevant effects such as geographic path length,
-link speed, routing, congestion, and routers that do not answer ICMP probes.]
+Several hops in every trace returned \texttt{* * *} (fully non-responsive,
+most often hops 5--8). These are very likely backbone/peering routers that
+filter ICMP probes but still forward traffic normally -- the traceroute
+still completes to the destination in every reached case. Because these
+hops have no RTT of their own, whatever delay they actually contributed is
+unavoidably folded into the next \emph{responsive} hop's incremental value
+(see \texttt{incremental\_latencies()} above) -- a real limitation of
+traceroute-based measurement, not an error in the analysis, and part of why
+a single hop's bar segment can look larger than the physical link itself
+would suggest.
+
+\textbf{Hop count versus RTT.} The scatter plot shows a rough positive trend
+-- more hops generally means more RTT, since a longer hop count is usually a
+signature of a physically longer path -- but the relationship is weak, not
+deterministic. Bata, GQ (105.235.237.2) and Port Moresby, PG
+(103.146.200.98) both take 22 hops, yet their RTTs differ by roughly 50\,ms
+(364\,ms vs. 312\,ms) -- a difference in specific routing (the Bata trace
+detours through several US-based addresses before reaching Africa) and link
+quality rather than hop count. Conversely, Tokyo (89.187.160.1) reaches in
+only 13 hops but has a higher RTT (195\,ms) than the 15-hop Copenhagen trace
+(137\,ms), because it is physically farther and crosses a longer undersea
+link. In short: hop count is a weak proxy for path length, but the
+\emph{physical distance and quality of the specific long-haul links
+traversed} -- not the number of hops -- is what actually determines RTT.
+This also mirrors what min/max RTT indicated in Part 1: RTT is set mainly by
+propagation delay over distance, with hop count and instantaneous network
+state (congestion, queuing at a particular router) contributing second-order
+variation on top of that floor.
 
 \section{Conclusion}
 
