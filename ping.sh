@@ -48,3 +48,6 @@ tail -n +2 ips.csv | while IFS=, read -r ip port speed continent country site pr
 do
   add_row "$ip" "$continent" "$country" "$site"
 done
+
+pip install matplotlib pandas
+python scatter.py
