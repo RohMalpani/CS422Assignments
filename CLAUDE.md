@@ -1,10 +1,16 @@
 # CS 422: Computer Networks (Fall 2026) — Group Repo
 
+This repo (`CS422Assignments`) covers all four assignments for the
+semester, each in its own top-level folder: `assignment1/`, `assignment2/`,
+`assignment3/`, `assignment4/`. (It started as a per-assignment repo
+`NetworksAssignment1`, renamed/consolidated on 2026-09-03 — the remote is
+already updated, no action needed.)
+
 ## Course context
 
 Four assignments span the semester, each building on the last:
 
-1. **Network latencies** (this repo, `assignment-1.pdf`) — ping + traceroute
+1. **Network latencies** (`assignment1/`, `assignment1/assignment-1.pdf`) — ping + traceroute
    against the iperf3 server list, RTT/distance analysis.
 2. **Custom TCP socket + congestion control** — hand-write a Python socket
    client against iperf3 servers, measure throughput/cwnd/RTT under CUBIC,
@@ -68,8 +74,9 @@ default way to work here:
    why this approach/library/algorithm was chosen over the alternatives, and
    any tradeoffs — before moving to the next step. This holds even when it
    feels slower than just finishing.
-3. **Log every notable decision** to `DECISIONS.md` (library/API choice,
-   algorithm, data source, parameter or buffer-size choice, etc.) with a
+3. **Log every notable decision** to that assignment's `DECISIONS.md` (e.g.
+   `assignment1/DECISIONS.md` — each assignment folder keeps its own, since
+   the decisions are specific to that assignment's tools/algorithms) with a
    one-line rationale as you go. This is the material both the `exam-prep`
    skill and the student draw on later — an undocumented decision is one
    nobody can explain under questioning.
@@ -84,20 +91,34 @@ walkthrough of an assignment's code + rationale ahead of the oral exam.
 
 ## Repo conventions
 
-- Input data (`ips.csv`, the iperf3 server list) lives at repo root, shared
-  by both parts.
-- Each assignment part gets its own subfolder (`part1/`, `part2/`, ...) with
-  its own scripts/outputs, rather than everything flat at repo root.
-- Assignment 1 deliverables (per `assignment-1.pdf`): a single automated
-  script per part (input = IP list file) that runs ping/traceroute, handles
-  non-responsive hosts/hops, and generates all PDF plots in one shot; a
-  report linking to the relevant code sections for each plot/finding.
-- **Part 1** (`part1/`): `ping.sh` (ping test + geolocation via ip-api.com,
-  writes `results.csv`) then `scatter.py` (distance vs RTT scatter). Note:
-  currently saves a PNG (`figures/scatter_plot.png`) and calls a blocking
-  `plt.show()` before `plt.savefig()` — worth revisiting for the "PDF plots,
-  fully automated" requirement.
-- **Part 2** (`part2/`): `run.py` is the one-shot entry point (select targets
-  → traceroute → plots). Individual steps (`select_targets.py`,
-  `traceroute_runner.py`, `batch_traceroute.py`, `plotting.py`) are also
-  runnable standalone for testing/debugging.
+- Each assignment lives in its own top-level folder (`assignment1/`,
+  `assignment2/`, ...), with its own inputs, scripts, outputs, report, and
+  `DECISIONS.md` — not shared across assignments, since each one uses
+  different tools/data.
+- Within an assignment folder, each assignment *part* gets its own subfolder
+  (e.g. `assignment1/part1/`, `assignment1/part2/`) with its own
+  scripts/outputs, rather than everything flat.
+- Deliverables per assignment (per that assignment's PDF): a single
+  automated script per part (input = a data file, e.g. an IP list) that
+  handles non-responsive hosts/hops/failures, and generates all PDF plots in
+  one shot; a report linking to the relevant code sections for each
+  plot/finding.
+
+### Assignment 1 (`assignment1/`)
+
+- Input data: `assignment1/ips.csv` (iperf3 server list), shared by both
+  parts. Report: `assignment1/report.tex`, figures read from
+  `assignment1/figures/`.
+- **Part 1** (`assignment1/part1/`): `ping.sh` (ping test + geolocation via
+  ip-api.com, writes `results.csv`) then `scatter.py` (distance vs RTT
+  scatter). Note: currently saves a PNG (`figures/scatter_plot.png`) and
+  calls a blocking `plt.show()` before `plt.savefig()` — worth revisiting for
+  the "PDF plots, fully automated" requirement.
+- **Part 2** (`assignment1/part2/`): `run.py` is the one-shot entry point
+  (select targets → traceroute → plots), writing PDFs directly into
+  `assignment1/figures/` with the filenames `report.tex` expects. Individual
+  steps (`select_targets.py`, `traceroute_runner.py`, `batch_traceroute.py`,
+  `plotting.py`) are also runnable standalone for testing/debugging. Traceroute
+  results vary run-to-run (real network conditions, occasional transient
+  failures even with retry) — see `assignment1/DECISIONS.md` before treating
+  any single run's output as final for the report.
