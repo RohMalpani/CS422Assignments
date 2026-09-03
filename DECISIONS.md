@@ -70,6 +70,18 @@ servers is acceptable; avoids silently changing what "5 random targets" means
 by re-sampling until success.
 **Code:** part2/traceroute_runner.py — `run_traceroute()` (`.reached` field)
 
+## 2026-09-03 — Plots write directly to the report's figures/ directory
+**Context:** A teammate's `report.tex` expects plots at root-level
+`figures/hop_latency_breakdown.pdf` and `figures/hop_count_vs_rtt.pdf`.
+**Decision:** `part2/run.py` and `part2/plotting.py` now write PDFs directly
+to `../figures` / `figures` (repo root) with those exact filenames, instead
+of a separate `part2/results/` directory.
+**Why:** Avoids keeping two copies of the same plots that can silently drift
+out of sync (e.g. regenerating in `part2/results/` without remembering to
+re-copy into `figures/`); the report always reads whatever the script most
+recently produced.
+**Code:** part2/run.py, part2/plotting.py
+
 ## 2026-09-03 — Reconciling with a teammate's Part 1 push
 **Context:** A groupmate pushed Part 1 work (`ping.sh` + `scatter.py`) directly
 while Part 2 was in progress. Two conflicts surfaced: they renamed the server

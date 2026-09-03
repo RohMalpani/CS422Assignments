@@ -98,7 +98,7 @@ def plot_hopcount_vs_rtt(results: list[dict], output_path: str):
 def main():
     parser = argparse.ArgumentParser(description="Generate part 2 plots from traceroute results.")
     parser.add_argument("--input", default="part2/data/traceroute_results.json")
-    parser.add_argument("--outdir", default="part2/results")
+    parser.add_argument("--outdir", default="figures", help="Directory report.tex reads figures from")
     args = parser.parse_args()
 
     results = load_results(args.input)
@@ -106,8 +106,9 @@ def main():
         print("No reached destinations in results -- nothing to plot.")
         return
 
-    stacked_path = f"{args.outdir}/latency_breakdown_stacked_bar.pdf"
-    scatter_path = f"{args.outdir}/hopcount_vs_rtt_scatter.pdf"
+    # Filenames match what report.tex's \plotplaceholder calls expect.
+    stacked_path = f"{args.outdir}/hop_latency_breakdown.pdf"
+    scatter_path = f"{args.outdir}/hop_count_vs_rtt.pdf"
 
     plot_stacked_bar(results, stacked_path)
     plot_hopcount_vs_rtt(results, scatter_path)

@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--n", type=int, default=DEFAULT_N)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument("--data-out", default="data/traceroute_results.json")
-    parser.add_argument("--plots-out", default="results")
+    parser.add_argument("--plots-out", default="../figures", help="Directory report.tex reads figures from")
     args = parser.parse_args()
 
     # Step 1: pick targets
@@ -51,8 +51,9 @@ def main():
         print("No reached destinations -- skipping plots.")
         return
 
-    stacked_path = f"{args.plots_out}/latency_breakdown_stacked_bar.pdf"
-    scatter_path = f"{args.plots_out}/hopcount_vs_rtt_scatter.pdf"
+    # Filenames match what report.tex's \plotplaceholder calls expect.
+    stacked_path = f"{args.plots_out}/hop_latency_breakdown.pdf"
+    scatter_path = f"{args.plots_out}/hop_count_vs_rtt.pdf"
     plot_stacked_bar(results, stacked_path)
     plot_hopcount_vs_rtt(results, scatter_path)
     print(f"Wrote {stacked_path}")
