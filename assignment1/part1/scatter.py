@@ -42,5 +42,4 @@ plt.ylabel('RTT (ms)')
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend()
 
-plt.show()
-plt.savefig('figures/scatter_plot.png', bbox_inches='tight')
+plt.savefig('NetworksAssignment1/figures/scatter_plot.png', bbox_inches='tight')
