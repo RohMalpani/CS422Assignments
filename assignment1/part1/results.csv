@@ -1,38 +1,192 @@
 ip,continent,country,site,min_rtt_ms,avg_rtt_ms,max_rtt_ms,latitude,longitude
-52.119.103.17,North America,USA,West Lafayette,4.209,12.189,56.938,40.4259,-86.9081
-160.242.19.254,Africa,AO,Luanda,298.388,319.136,367.114,-8.81466,13.2302
-41.110.39.130,Africa,DZ,Algiers,164.185,182.277,246.594,36.7598,3.01369
-213.158.175.240,Africa,EG,Cairo,168.356,222.082,356.200,30.0383,31.2102
-102.214.66.39,Africa,GH,Accra,211.874,248.932,322.786,5.60372,-0.186964
-102.214.66.19,Africa,GH,Accra,226.470,240.169,311.760,5.60372,-0.186964
-212.60.92.134,Africa,GM,Banjul,173.738,193.906,246.551,13.4256,-16.7397
-105.235.237.2,Africa,GQ,Bata,273.964,287.124,357.615,3.75496,8.78213
-gw1.malabo.guineanet.net,Africa,GQ,Bata,274.049,287.251,332.811,NA,NA
-speed.mymanga.pro,Africa,KE,Nairobi,340.728,356.293,405.470,-1.2841,36.8155
-speedtestfl.telecom.mu,Africa,MU,Floreal,310.674,408.982,661.875,-20.2397,57.4722
-197.227.12.18,Africa,MU,Floreal,310.533,355.557,474.706,-20.2397,57.4722
-41.210.185.162,Africa,UG,Kampala,254.852,280.429,334.968,0.321,32.5714
-69.48.239.124,Africa,ZA,Johannesburg,290.940,314.082,356.804,-26.2309,28.0583
-23.249.55.42,Asia,AE,Dubai,224.261,333.359,469.313,25.0734,55.2979
-69.48.238.200,Asia,AE,Dubai,228.113,255.932,316.022,25.0734,55.2979
-189.25.101.151,Asia,AE,Dubai,233.370,259.796,331.300,25.0734,55.2979
-189.25.97.217,Asia,AE,Dubai,224.476,298.053,440.269,25.0734,55.2979
-speedtest.hkg12.hk.leaseweb.net,Asia,HK,Hong Kong,209.103,221.907,290.032,22.3656,114.119
-84.17.57.129,Asia,HK,Hong Kong,195.146,203.969,256.872,22.3193,114.169
-23.249.58.14,Asia,HK,Hong Kong,198.562,220.912,279.181,22.3193,114.169
-speedtest.tangerang2.myrepublic.net.id,Asia,ID,Kediri,273.464,299.107,357.567,-6.1716,106.5265
-speed.netfiber.net.il,Asia,IL,Jerusalem,184.515,205.371,258.479,31.7674,35.2186
-speed.rimon.net.il,Asia,IL,Jerusalem,185.199,197.957,252.824,31.7674,35.2186
-169.150.202.193,Asia,IL,Tel Aviv,177.355,201.234,261.843,32.0804,34.7807
-49.205.75.2,Asia,IN,Bengaluru,236.196,255.392,319.361,12.9753,77.591
-69.48.236.198,Asia,IN,Pune,279.491,303.786,366.764,18.5211,73.8502
-23.249.60.154,Asia,JP,Komagome,134.607,148.087,189.870,35.6893,139.6899
-speedtest.tyo11.jp.leaseweb.net,Asia,JP,Tokyo,164.439,179.606,237.674,35.6893,139.6899
-89.187.160.1,Asia,JP,Tokyo,186.049,209.575,271.187,35.6893,139.6899
-66.35.31.81,Asia,JP,Tokyo,134.728,184.212,350.785,35.6893,139.6899
-coverage1.mobicom.mn,Asia,MN,Ulaanbaatar,219.905,248.058,335.687,47.9177,106.913
-speedtest.sin1.sg.leaseweb.net,Asia,SG,Singapore,245.177,262.571,313.658,1.27998,103.842
-89.187.162.1,Asia,SG,Singapore,255.039,286.207,396.619,1.35208,103.82
-sgp.proof.ovh.net,Asia,SG,Singapore,223.343,236.719,314.530,1.27994,103.849
-96.45.38.22,Asia,SG,Singapore,202.707,249.002,488.262,1.35208,103.82
-176.23.128.102,Asia,SG,Singapore,201.219,221.919,340.978,1.35208,103.82
+52.119.103.17,North America,USA,West Lafayette,4.577,23.718,104.307,40.4259,-86.9081
+160.242.19.254,Africa,AO,Luanda,301.539,328.928,381.964,-8.81466,13.2302
+41.110.39.130,Africa,DZ,Algiers,165.125,199.588,249.083,36.7598,3.01369
+213.158.175.240,Africa,EG,Cairo,171.849,213.642,276.055,30.0383,31.2102
+102.214.66.39,Africa,GH,Accra,211.936,227.709,272.397,5.60372,-0.186964
+102.214.66.19,Africa,GH,Accra,227.614,249.515,300.789,5.60372,-0.186964
+212.60.92.134,Africa,GM,Banjul,NA,NA,NA,13.4256,-16.7397
+105.235.237.2,Africa,GQ,Bata,275.034,295.966,350.461,3.75496,8.78213
+gw1.malabo.guineanet.net,Africa,GQ,Bata,276.182,301.846,373.580,3.75496,8.78213
+speed.mymanga.pro,Africa,KE,Nairobi,352.161,421.993,558.955,-1.2841,36.8155
+speedtestfl.telecom.mu,Africa,MU,Floreal,303.465,333.181,393.137,-20.2397,57.4722
+197.227.12.18,Africa,MU,Floreal,303.421,324.661,369.079,-20.2397,57.4722
+41.210.185.162,Africa,UG,Kampala,257.464,303.533,462.972,0.321,32.5714
+69.48.239.124,Africa,ZA,Johannesburg,280.392,370.720,533.133,-26.2309,28.0583
+23.249.55.42,Asia,AE,Dubai,221.340,254.490,306.030,25.0734,55.2979
+69.48.238.200,Asia,AE,Dubai,228.493,248.189,303.848,25.0734,55.2979
+189.25.101.151,Asia,AE,Dubai,235.739,298.423,364.538,25.0734,55.2979
+189.25.97.217,Asia,AE,Dubai,220.251,299.488,514.763,25.0734,55.2979
+speedtest.hkg12.hk.leaseweb.net,Asia,HK,Hong Kong,218.972,262.873,342.701,22.3656,114.119
+84.17.57.129,Asia,HK,Hong Kong,194.732,238.008,379.199,22.3193,114.169
+23.249.58.14,Asia,HK,Hong Kong,203.290,231.708,312.766,22.3193,114.169
+speedtest.tangerang2.myrepublic.net.id,Asia,ID,Kediri,266.115,319.588,417.086,-6.1716,106.5265
+speed.netfiber.net.il,Asia,IL,Jerusalem,187.940,221.394,287.047,31.7674,35.2186
+speed.rimon.net.il,Asia,IL,Jerusalem,184.949,221.161,305.998,31.7674,35.2186
+169.150.202.193,Asia,IL,Tel Aviv,179.362,198.546,266.322,32.0804,34.7807
+49.205.75.2,Asia,IN,Bengaluru,237.799,277.435,342.006,12.9753,77.591
+69.48.236.198,Asia,IN,Pune,274.072,338.519,468.122,18.5211,73.8502
+23.249.60.154,Asia,JP,Komagome,141.669,220.365,413.047,35.6893,139.6899
+speedtest.tyo11.jp.leaseweb.net,Asia,JP,Tokyo,165.208,196.655,249.854,35.6893,139.6899
+89.187.160.1,Asia,JP,Tokyo,188.184,238.326,358.491,35.6893,139.6899
+66.35.31.81,Asia,JP,Tokyo,135.369,177.752,326.992,35.6893,139.6899
+coverage1.mobicom.mn,Asia,MN,Ulaanbaatar,222.061,332.680,647.691,47.9177,106.913
+speedtest.sin1.sg.leaseweb.net,Asia,SG,Singapore,246.379,276.258,340.018,1.27998,103.842
+89.187.162.1,Asia,SG,Singapore,248.419,290.013,403.387,1.35208,103.82
+sgp.proof.ovh.net,Asia,SG,Singapore,224.848,255.983,397.763,1.27994,103.849
+96.45.38.22,Asia,SG,Singapore,204.844,236.890,291.817,1.35208,103.82
+176.23.128.102,Asia,SG,Singapore,204.660,261.292,447.792,1.35208,103.82
+iperf.pendc.com,Asia,TR,Bursa,187.246,213.332,257.453,40.2309,29.0625
+156.146.52.1,Asia,TR,Istanbul,158.033,208.062,296.715,41.0146,28.9532
+69.48.237.66,Asia,TR,Istanbul,170.963,190.458,244.464,41.0146,28.9532
+189.25.98.63,Asia,TW,Taipei,197.631,277.416,495.238,25.053,121.5259
+speedtest.uztelecom.uz,Asia,UZ,Tashkent,200.188,224.159,274.688,41.2615,69.2177
+185.180.12.40,Europe,AT,Vienna,136.308,184.797,256.030,48.2049,16.3662
+iperf3-vie-at.alwyzon.net,Europe,AT,Vienna,140.411,163.929,211.316,48.301,16.3448
+207.211.214.65,Europe,BE,Brussels,122.146,157.837,193.251,50.8534,4.347
+185.3.160.57,Europe,BE,Liège,123.712,174.582,271.079,50.8476,4.35717
+37.19.203.1,Europe,BG,Sofia,150.310,211.630,348.451,42.6951,23.325
+speedtest.shinternet.ch,Europe,CH,Schaffhausen,133.059,211.558,700.777,47.7027,8.6676
+speedtest.init7.net,Europe,CH,Winterthur,134.292,179.208,303.160,47.3975,8.6209
+speedtest.iway.ch,Europe,CH,Zürich,128.849,165.767,237.877,47.3952,8.4925
+89.187.165.1,Europe,CH,Zürich,136.448,156.963,223.909,47.3643,8.5437
+t5.cscs.ch,Europe,CH,Zürich,134.272,179.690,262.977,47.3188,8.5772
+185.152.65.113,Europe,CZ,Prague,142.163,165.799,257.518,50.0883,14.4124
+a209.speedtest.wobcom.de,Europe,DE,Berlin,129.738,178.996,269.380,52.4041,10.7532
+a110.speedtest.wobcom.de,Europe,DE,Berlin,129.871,170.505,261.988,52.4041,10.7532
+a208.speedtest.wobcom.de,Europe,DE,Düsseldorf,122.554,169.460,257.316,52.4041,10.7532
+178.215.228.109,Europe,DE,Frankfurt,132.663,175.017,358.551,50.1169,8.6837
+fra.speedtest.clouvider.net,Europe,DE,Frankfurt,128.511,178.358,276.558,50.0971,8.5952
+speedtest.ip-projects.de,Europe,DE,Frankfurt,122.992,181.586,274.559,50.1109,8.68213
+speedtest.fra1.de.leaseweb.net,Europe,DE,Frankfurt,127.081,164.143,254.448,48.5296,12.1618
+spd-desrv.hostkey.com,Europe,DE,Frankfurt,NA,NA,NA,50.1169,8.6837
+a210.speedtest.wobcom.de,Europe,DE,Frankfurt,126.030,157.508,215.112,52.4041,10.7532
+a205.speedtest.wobcom.de,Europe,DE,Frankfurt,125.105,203.631,443.988,52.4041,10.7532
+185.102.219.93,Europe,DE,Frankfurt,126.008,174.820,284.618,50.1169,8.6837
+96.45.39.38,Europe,DE,Frankfurt,126.240,170.012,233.597,50.1169,8.6837
+speedtest.level66.services,Europe,DE,Frankfurt,133.359,197.646,273.006,50.1169,8.6837
+speedtest.wtnet.de,Europe,DE,Norderstedt,122.897,156.948,220.309,53.4548,9.9689
+speedtest.wobcom.de,Europe,DE,Wolfsburg,118.538,166.529,264.942,52.4041,10.7532
+a400.speedtest.wobcom.de,Europe,DE,Wolfsburg,127.404,151.472,220.336,52.4041,10.7532
+speedtest.hiper.dk,Europe,DK,Copenhagen,135.490,209.925,318.447,54.7697,11.8761
+speed1.fiberby.dk,Europe,DK,Copenhagen,135.871,171.620,280.383,56.2639,9.50179
+speed2.fiberby.dk,Europe,DK,Copenhagen,137.632,165.907,207.391,56.2639,9.50179
+bwtest.linxtelecom.com,Europe,EE,Tallinn,145.488,187.890,388.550,59.4381,24.7369
+185.93.3.50,Europe,ES,Madrid,139.634,169.839,240.537,40.4153,-3.694
+148.230.45.213,Europe,ES,Madrid,131.959,201.512,471.303,40.4153,-3.694
+spd-fisrv.hostkey.com,Europe,FI,Helsinki,NA,NA,NA,60.1719,24.9347
+speedtest.milkywan.fr,Europe,FR,Croissy-Beaubourg,123.055,149.754,229.486,48.8558,2.3494
+138.199.14.66,Europe,FR,Marseille,131.526,198.100,307.431,43.2951,5.3861
+185.93.2.193,Europe,FR,Paris,127.003,164.761,242.441,48.8558,2.3494
+iperf3.moji.fr,Europe,FR,Paris,117.761,186.401,287.578,48.8558,2.3494
+ping-90ms.online.net,Europe,FR,Paris,208.298,257.190,395.962,48.8558,2.3494
+iperf.online.net,Europe,FR,Paris,121.084,217.923,336.827,48.8558,2.3494
+96.45.42.156,Europe,FR,Paris,118.129,142.698,197.912,48.8558,2.3494
+96.45.41.167,Europe,FR,Valbonne,131.677,151.964,205.123,43.6319,7.0043
+ping.online.net,Europe,FR,Vitry-sur-Seine,118.347,151.058,201.114,48.8558,2.3494
+iperf.as42831.net,Europe,GB,London,116.007,152.767,207.523,51.5081,-0.1278
+speedtest.lon1.uk.leaseweb.net,Europe,GB,London,115.930,171.888,265.321,51.5081,-0.1278
+speedtest.lon12.uk.leaseweb.net,Europe,GB,London,121.900,148.227,201.673,51.5182,-0.0905412
+lon.speedtest.clouvider.net,Europe,GB,London,115.992,148.419,212.000,51.5064,-0.02
+185.59.221.51,Europe,GB,London,122.594,172.186,273.047,51.5081,-0.1278
+speedtest2.lightningfibre.net.uk,Europe,GB,London,125.397,179.700,395.298,50.7707,0.281895
+96.45.40.45,Europe,GB,London,117.786,150.688,263.396,51.5164,-0.093
+speedtest.rapidswitch.com,Europe,GB,Maidenhead,117.077,152.331,219.628,51.4659,-0.2117
+man.speedtest.clouvider.net,Europe,GB,Manchester,136.922,200.540,274.527,53.4809,-2.2374
+169.150.252.2,Europe,GR,Athens,166.422,202.561,305.666,37.9842,23.7353
+169.150.242.129,Europe,HR,Zagreb,143.723,176.302,300.498,45.8293,15.9793
+87.249.137.8,Europe,IE,Dublin,124.450,143.517,193.892,53.3354,-6.252
+spd-icsrv.hostkey.com,Europe,IS,Reykjavik,147.628,179.217,270.064,64.1336,-21.8934
+it1.speedtest.aruba.it,Europe,IT,Arezzo,147.570,201.724,281.168,43.4631,11.8783
+84.17.59.129,Europe,IT,Milan,136.787,168.160,207.884,45.4722,9.1922
+217.61.40.96,Europe,IT,Ponte San Pietro,138.773,185.065,331.258,45.7059,9.5872
+speed-cb.dimensione.com,Europe,IT,Rome,149.786,207.497,355.546,41.5575,14.6686
+speedtestlondon.telecom.mu,Europe,MU,London,135.102,168.421,254.546,-20.2397,57.4722
+speedtest.ams1.nl.leaseweb.net,Europe,NL,Amsterdam,120.226,154.101,254.353,52.3907,4.66555
+speedtest.ams2.nl.leaseweb.net,Europe,NL,Amsterdam,119.766,175.044,332.269,52.3676,4.90414
+ams.speedtest.clouvider.net,Europe,NL,Amsterdam,121.014,148.419,212.684,52.3716,4.8883
+ping-ams1.online.net,Europe,NL,Amsterdam,135.033,198.082,275.761,52.3803,4.6422
+a204.speedtest.wobcom.de,Europe,NL,Amsterdam,118.263,142.109,208.806,52.4041,10.7532
+185.102.218.1,Europe,NL,Amsterdam,121.040,157.272,264.177,52.3716,4.8883
+iperf-ams-nl.eranium.net,Europe,NL,Amsterdam,120.211,147.409,201.980,52.3676,4.90414
+speedtest.netone.nl,Europe,NL,Amsterdam,120.709,146.349,195.319,52.3716,4.8883
+lg.ams-nl.gigahost.no,Europe,NL,Amsterdam,142.789,229.090,419.490,59.1728,10.2221
+speedtest.nl1.mirhosting.net,Europe,NL,Dronten,120.006,143.669,203.364,52.5378,5.6966
+nl.speed.vps1.net,Europe,NL,Dronten,118.751,176.398,337.058,52.5347,5.72181
+iperf1.surfwireless.nl,Europe,NL,Lelystad,123.210,154.554,210.725,52.0907,5.12142
+iperf.worldstream.nl,Europe,NL,Naaldwijk,126.378,163.430,255.762,51.9968,4.2057
+lg.gigahost.no,Europe,NO,Sandefjord,138.387,159.295,214.242,59.1728,10.2221
+speedsrv.multinet24.pl,Europe,PL,Debica,141.297,175.166,251.321,50.045,21.3996
+185.246.208.67,Europe,PL,Warsaw,137.292,171.113,244.094,52.2299,21.0093
+109.61.94.65,Europe,PT,Lisbon,148.623,177.650,280.724,38.7294,-9.1538
+185.102.217.170,Europe,RO,Bucharest,152.884,191.466,294.340,44.4291,26.1006
+speedtest1.sox.rs,Europe,RS,Belgrade,150.586,208.354,322.555,44.8125,20.4612
+iperf.fegis.nu,Europe,SE,Alvsjo,135.897,192.606,384.961,58.5019,13.1585
+speedtest.kamel.network,Europe,SE,Kista,135.933,160.861,267.062,59.2387,18.2266
+185.76.9.135,Europe,SE,Stockholm,144.318,185.009,249.693,59.3287,18.0717
+156.146.40.65,Europe,SK,Bratislava,145.498,187.871,290.655,48.1504,17.1081
+37.19.218.65,Europe,UA,Kyiv,158.559,198.608,267.226,50.458,30.5303
+speed.cosmonova.net,Europe,UA,Kyiv,155.826,185.314,246.946,50.458,30.5303
+148.230.60.200,Latin America,BR,Sao Paulo,160.269,189.911,251.977,-23.5475,-46.6361
+138.199.4.1,Latin America,BR,São Paulo,160.967,189.713,262.510,-23.5475,-46.6361
+79.127.209.1,Latin America,CL,Santiago,162.825,208.607,361.365,-33.4521,-70.6536
+156.146.53.53,Latin America,CR,San Jose,71.192,98.295,169.179,37.3388,-121.8916
+speedtest.masnet.ec,Latin America,EC,Santa Ana,127.964,169.745,274.814,-1.2043,-80.3717
+speedtest1.flowjamaica.com,Latin America,JM,Portmore,73.992,154.707,346.466,17.9697,-77.6028
+121.127.43.65,Latin America,MX,Querétaro,67.777,105.252,171.455,15.834,-92.7557
+speedtest1.cwpanama.net,Latin America,PA,Colón,99.140,143.787,300.122,8.9948,-79.523
+speedtest6.cwpanama.net,Latin America,PA,Panamá,98.856,129.871,189.517,8.9948,-79.523
+speedtest.mtl2.ca.leaseweb.net,North America,CA,Montreal,46.379,98.010,250.671,45.5019,-73.5674
+speedtest.goco.ca,North America,CA,Montreal,50.574,135.432,402.500,45.4977,-73.5709
+173.243.131.29,North America,CA,Ottawa,46.349,86.404,191.231,45.413,-75.7011
+138.199.57.129,North America,CA,Toronto,38.864,87.156,177.883,43.709,-79.4057
+96.45.43.6,North America,CA,Toronto,38.549,61.106,121.850,43.709,-79.4057
+204.155.243.172,North America,CA,Toronto,38.801,79.665,159.167,43.709,-79.4057
+66.35.30.9,North America,CA,Vancouver,64.185,83.942,133.331,49.2476,-123.1234
+speed.couch.ca,North America,CA,Victoria,NA,NA,NA,50.7033,-119.2683
+yyc-speedtest.xplore.ca,North America,CA,Woodstock,72.821,89.254,152.080,51.053,-114.1361
+ash.speedtest.clouvider.net,North America,US,Ashburn,47.155,62.618,112.211,39.018,-77.539
+37.19.206.20,North America,US,Ashburn,46.854,69.518,134.403,39.0469,-77.4903
+66.35.22.79,North America,US,Ashburn,44.790,81.227,126.067,39.0469,-77.4903
+atl.speedtest.clouvider.net,North America,US,Atlanta,45.313,76.952,166.839,33.7485,-84.3871
+185.152.66.67,North America,US,Atlanta,44.556,64.316,136.467,33.7485,-84.3871
+109.61.86.65,North America,US,Boston,50.356,73.928,140.930,42.3602,-71.0594
+speedtest.chi11.us.leaseweb.net,North America,US,Chicago,30.023,62.144,159.183,41.874,-88.0038
+185.93.1.65,North America,US,Chicago,28.206,43.014,101.038,41.8483,-87.6517
+chi.speedtest.clouvider.net,North America,US,Chicago,28.620,44.503,106.045,41.871,-87.6289
+speedtest.dal13.us.leaseweb.net,North America,US,Dallas,45.000,65.496,125.973,32.7908,-96.8336
+dal.speedtest.clouvider.net,North America,US,Dallas,45.757,89.570,166.051,32.7908,-96.8336
+89.187.164.1,North America,US,Dallas,45.632,130.420,369.848,32.7797,-96.8022
+dfw.speedtest.is.cc,North America,US,Dallas,40.813,59.966,154.220,40.7862,-74.0743
+66.35.27.207,North America,US,Dallas,41.023,61.355,100.935,32.7797,-96.8022
+37.19.216.1,North America,US,Houston,51.365,82.891,134.622,29.7646,-95.3657
+speedtest.nocix.net,North America,US,Kansas City,40.370,74.541,185.415,39.1027,-94.5778
+la.speedtest.clouvider.net,North America,US,Los Angeles,71.670,113.135,217.351,34.0609,-118.2414
+speedtest.lax12.us.leaseweb.net,North America,US,Los Angeles,71.593,110.290,229.903,32.7908,-96.8336
+185.152.67.2,North America,US,Los Angeles,72.369,91.858,144.039,34.0544,-118.244
+speedtest.mia11.us.leaseweb.net,North America,US,Miami,62.786,86.118,146.770,25.7701,-80.1928
+195.181.162.195,North America,US,Miami,57.623,79.984,114.045,25.7701,-80.1928
+23.249.54.234,North America,US,Miami,58.787,113.039,209.598,25.7701,-80.1928
+spd-uswb.hostkey.com,North America,US,New York,NA,NA,NA,40.7126,-74.0066
+185.59.223.8,North America,US,New York,44.225,73.370,137.970,40.7126,-74.0066
+speedtest.nyc1.us.leaseweb.net,North America,US,New York City,45.271,58.653,136.552,40.7126,-74.0066
+speedtest.phx1.us.leaseweb.net,North America,US,Phoenix,72.530,94.667,146.222,33.5111,-111.9075
+phx.speedtest.clouvider.net,North America,US,Phoenix,67.973,126.708,205.484,33.4413,-112.0421
+209.40.123.215,North America,US,Plano,42.337,59.100,104.199,32.7797,-96.8022
+speedtest.xmission.com,North America,US,Salt Lake,54.841,80.129,145.214,39.321,-111.094
+speedtest.sfo12.us.leaseweb.net,North America,US,San Francisco,68.298,172.340,319.407,37.3388,-121.8916
+66.35.20.123,North America,US,San Jose,64.155,110.051,179.435,37.3388,-121.8916
+148.230.59.38,North America,US,San Jose,63.002,110.400,256.750,37.3388,-121.8916
+speedtest.sea11.us.leaseweb.net,North America,US,Seattle,65.167,95.050,169.188,47.6109,-122.3303
+84.17.41.11,North America,US,Seattle,61.954,77.855,129.401,47.6109,-122.3303
+speedtest.wdc2.us.leaseweb.net,North America,US,Washington,45.788,78.081,152.991,38.7493,-77.4719
+speedtest.syd12.au.leaseweb.net,Oceania,AU,Sydney,339.273,386.409,466.746,-33.8229,151.1886
+143.244.63.144,Oceania,AU,Sydney,194.200,240.492,452.149,-33.8672,151.1997
+syd.proof.ovh.net,Oceania,AU,Sydney,322.112,352.028,403.193,-33.8672,151.1997
+96.45.44.87,Oceania,AU,Sydney,189.733,211.004,276.960,-33.8672,151.1997
+speedtest.lagoon.nc,Oceania,NC,Noumea,254.700,319.153,411.783,-22.2665,166.4742
+akl.linetest.nz,Oceania,NZ,Auckland,191.655,235.499,292.991,-37.3657,175.6716
+72.1.86.46,Oceania,NZ,Auckland,192.126,211.877,261.765,-36.8504,174.7675
+chch.linetest.nz,Oceania,NZ,Christchurch,218.625,251.356,308.231,-37.3657,175.6716
+154.81.51.4,Oceania,PG,Port Moresby,NA,NA,NA,-33.8688,151.209
+103.146.200.98,Oceania,PG,Port Moresby,312.894,312.894,312.894,-9.43529,147.18

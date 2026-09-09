@@ -6,7 +6,43 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
-printf 'ip,continent,country,site,min_rtt_ms,avg_rtt_ms,max_rtt_ms,latitude,longitude\n' > results.csv
+input_csv="$SCRIPT_DIR/../ips.csv"
+results_out="$SCRIPT_DIR/results.csv"
+plots_out="$SCRIPT_DIR/../figures"
+limit=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --input)
+      input_csv="$2"
+      shift 2
+      ;;
+    --results-out)
+      results_out="$2"
+      shift 2
+      ;;
+    --plots-out)
+      plots_out="$2"
+      shift 2
+      ;;
+    --limit)
+      limit="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [[ -n "$limit" ]] && { ! [[ "$limit" =~ ^[0-9]+$ ]] || (( limit < 2 )); }; then
+  echo "--limit must be an integer of at least 2 (including the local IP)." >&2
+  exit 2
+fi
+
+mkdir -p "$(dirname "$results_out")" "$plots_out"
+printf 'ip,continent,country,site,min_rtt_ms,avg_rtt_ms,max_rtt_ms,latitude,longitude\n' > "$results_out"
 
 add_row () {
   ip="$1"
@@ -40,7 +76,7 @@ add_row () {
   printf '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
     "$ip" "$continent" "$country" "$site" \
     "$min_rtt" "$avg_rtt" "$max_rtt" \
-    "$latitude" "$longitude" >> results.csv
+    "$latitude" "$longitude" >> "$results_out"
 
   rm "$ping_output"
 }
@@ -49,10 +85,15 @@ add_row () {
 my_ip=$(curl -s --max-time 10 https://api.ipify.org)
 add_row "$my_ip" "North America" "USA" "West Lafayette"
 
-#other ips
-tail -n +2 ../ips.csv | while IFS=, read -r ip port speed continent country site provider
-do
+# Other IPs. A limit includes our public IP, so process at most limit - 1
+# rows from the supplied server list.
+remote_count=0
+while IFS=, read -r ip port speed continent country site provider; do
+  if [[ -n "$limit" ]] && (( remote_count >= limit - 1 )); then
+    break
+  fi
   add_row "$ip" "$continent" "$country" "$site"
-done
+  ((remote_count += 1))
+done < <(tail -n +2 "$input_csv")
 
-"$PYTHON_BIN" scatter.py --input results.csv --output ../figures/distance_vs_rtt.pdf
+"$PYTHON_BIN" scatter.py --input "$results_out" --output "$plots_out/distance_vs_rtt.pdf"

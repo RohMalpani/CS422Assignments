@@ -8,6 +8,7 @@ Usage:
 """
 
 import argparse
+from pathlib import Path
 
 from batch_traceroute import result_to_dict, run_batch
 from plotting import load_results, plot_hopcount_vs_rtt, plot_stacked_bar
@@ -17,12 +18,15 @@ import json
 
 
 def main():
+    part2_dir = Path(__file__).resolve().parent
+    assignment_dir = part2_dir.parent
+
     parser = argparse.ArgumentParser(description="Run the full part 2 pipeline: select targets, traceroute, plot.")
-    parser.add_argument("--input", default="../ips.csv", help="Path to the server list CSV")
+    parser.add_argument("--input", default=assignment_dir / "ips.csv", help="Path to the server list CSV")
     parser.add_argument("--n", type=int, default=DEFAULT_N)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--data-out", default="data/traceroute_results.json")
-    parser.add_argument("--plots-out", default="../figures", help="Directory report.tex reads figures from")
+    parser.add_argument("--data-out", default=part2_dir / "data" / "traceroute_results.json")
+    parser.add_argument("--plots-out", default=assignment_dir / "figures", help="Directory for the latest generated plots")
     args = parser.parse_args()
 
     # Step 1: pick targets
@@ -41,6 +45,7 @@ def main():
         "reached": [result_to_dict(r) for r in reached],
         "skipped": [{"target": r.target, "resolved_ip": r.resolved_ip} for r in skipped],
     }
+    Path(args.data_out).parent.mkdir(parents=True, exist_ok=True)
     with open(args.data_out, "w") as f:
         json.dump(output, f, indent=2)
     print(f"Wrote raw results to {args.data_out}")
@@ -51,7 +56,7 @@ def main():
         print("No reached destinations -- skipping plots.")
         return
 
-    # Filenames match what report.tex's \plotplaceholder calls expect.
+    # Stable filenames make the latest plots easy to find after every run.
     stacked_path = f"{args.plots_out}/hop_latency_breakdown.pdf"
     scatter_path = f"{args.plots_out}/hop_count_vs_rtt.pdf"
     plot_stacked_bar(results, stacked_path)

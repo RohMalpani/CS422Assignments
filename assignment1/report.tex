@@ -67,8 +67,8 @@ longitude from \url{ip-api.com} and calculated great-circle distance with the
 Haversine formula using an Earth radius of 6,371 km.
 
 The code used to collect and process the ping measurements is available here:
-\codelink{ping collection}{assignment1/part1/ping.sh\#L19-L20} and
-\codelink{RTT calculation}{assignment1/part1/ping.sh\#L22-L30}.
+\codelink{ping collection}{assignment1/part1/ping.sh\#L55-L56} and
+\codelink{RTT calculation}{assignment1/part1/ping.sh\#L58-L66}.
 
 \subsection{Results}
 
@@ -96,7 +96,7 @@ data are available in \texttt{part1/results.csv}.
 
 \begin{figure}[H]
     \centering
-    \plotplaceholder{figures/distance_vs_rtt.pdf}{Distance versus RTT}
+    \plotplaceholder{report_figures/distance_vs_rtt.pdf}{Distance versus RTT}
     \caption{Geographic distance from West Lafayette, Indiana, versus
     round-trip time. Each point represents one destination IP address.}
     \label{fig:distance-rtt}
@@ -107,47 +107,26 @@ The plotting code is available here:
 
 \subsection{Discussion}
 
-The measurements show a moderate positive relationship between geographic
-distance and RTT.  Among the 35 destinations with both valid geolocation and
-ping data, the Pearson correlation between distance and average RTT is
-approximately 0.57.  The correlations for minimum and maximum RTT are similar,
-at approximately 0.58 and 0.57, respectively.  Thus, more distant destinations
-generally have greater RTTs, but distance alone does not predict latency
-precisely.  Geographic distance is the great-circle distance between endpoints,
-whereas packets follow routes selected by network providers.  A route may be
-longer than the direct geographic path because of peering locations, submarine
-cable landing points, or indirect routing.  Every router along that route also
-adds processing and transmission delay.
+RTT generally increases with geographic distance because signals need more
+time to travel over longer physical paths.  The relationship is not exact,
+however, because packets follow routes selected by network providers rather
+than a direct geographic path.  Peering locations, indirect routing, and
+router processing can all add latency.
 
-The minimum RTT is the best estimate in this experiment of the path's baseline
-latency.  It reflects propagation delay plus the smallest observed amount of
-router processing, transmission, and queueing delay.  It does not measure
-distance directly.  Destinations at the same reported location can still have
-different minimum RTTs because their providers may use different routes.  For
-example, the four Tokyo-area servers are all about 10,304 km away, but their
-minimum RTTs range from approximately 135 ms to 186 ms.  This variation is
-consistent with differences in routing and network infrastructure rather than
-geographic distance.
-
-The maximum RTT describes the slowest of the ten ping replies and is more
-sensitive to the network state during the measurement.  Temporary congestion
-can increase queueing delay, and routers may deprioritize ICMP echo traffic.
-For example, \texttt{speedtestfl.telecom.mu} had a minimum RTT of approximately
-311 ms but a maximum of approximately 662 ms, a spread of about 351 ms.  The
-Singapore destination \texttt{96.45.38.22} ranged from approximately 203 ms to
-488 ms.  These large spreads cannot be explained by a change in physical
-distance during the test.  They indicate transient queueing, congestion, route
-changes, or variable ICMP processing.  Overall, distance establishes an
-important propagation-delay floor, while routing choices and short-term
-network conditions account for much of the scatter and the unusually high
-maximum RTT values.
+The minimum RTT is the best estimate of the path's baseline latency.  It
+mostly reflects propagation, transmission, and processing delay with little
+temporary queueing.  The maximum RTT is the slowest observed reply and shows
+how network conditions varied during the measurement.  Congestion, queueing,
+route changes, and ICMP processing priority can increase maximum RTT above the
+baseline.  Therefore, distance establishes an important lower bound on RTT,
+while routing and short-term network conditions explain much of the variation.
 
 \section{Latency Breakdown}
 
 \subsection{Method}
 
-Five destinations were selected uniformly at random (seed 42, for
-reproducibility) from the full iperf3 server list.
+Five destinations were selected uniformly at random from the iperf3 server
+list using seed 42.
 
 \begin{table}[H]
     \centering
@@ -157,33 +136,19 @@ reproducibility) from the full iperf3 server list.
         \toprule
         Destination IP & Site/Country & Outcome \\
         \midrule
-        185.152.67.2 & Los Angeles, US & Non-responsive after retry (skipped) \\
-        89.187.160.1 & Tokyo, JP & Reached, 13 hops \\
-        105.235.237.2 & Bata, GQ & Reached, 22 hops \\
-        103.146.200.98 & Port Moresby, PG & Reached, 22 hops \\
-        speed2.fiberby.dk & Copenhagen, DK & Reached, 15 hops \\
+        185.152.67.2 & Los Angeles, US & Reached, 12 hops \\
+        89.187.160.1 & Tokyo, JP & Reached, 12 hops \\
+        105.235.237.2 & Bata, GQ & Reached, 21 hops \\
+        103.146.200.98 & Port Moresby, PG & Reached, 21 hops \\
+        speed2.fiberby.dk & Copenhagen, DK & Reached, 14 hops \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Traceroute was run in ICMP-echo mode (\texttt{-I}), sending 3 probes per hop
-with a 2-second per-probe timeout, up to 30 hops. Per-hop RTT is the
-\emph{minimum} of the responsive probes at that hop -- this approximates the
-hop's propagation/processing floor and is less skewed by one transient
-queuing delay than an average would be. A hop where all 3 probes time out
-(shown as \texttt{* * *}) has no RTT value; it is still counted toward hop
-count but excluded from the per-hop RTT data, since traceroute gives us
-nothing to measure there. A destination itself is considered non-responsive,
-and skipped, only if a full traceroute attempt is retried once and still
-never receives a reply from the destination IP -- this distinguishes a
-genuinely dead/filtered destination from a one-off transient failure (both
-were observed during testing; see repo \texttt{DECISIONS.md} for detail).
-Initial testing with the default UDP-mode traceroute under-reported
-reachability: 3 of the first 5 randomly-selected destinations appeared
-non-responsive, yet a plain \texttt{ping} showed all 3 were alive -- they (or
-a router along the path) silently drop the ICMP "port unreachable" reply
-UDP-mode traceroute depends on, while answering ICMP echo normally. Switching
-to ICMP-mode traceroute resolved this.
+Each destination was traced in ICMP-echo mode with three probes per hop, a
+two-second timeout, and a 30-hop limit. The per-hop RTT is the minimum of the
+responsive probes. Non-responsive hops are recorded as \texttt{*}, and a
+destination that does not respond after a retry is skipped.
 
 The traceroute collection and parsing code is available here:
 \codelink{traceroute invocation, parsing, and reachability check}{assignment1/part2/traceroute\_runner.py\#L47-L153},
@@ -196,7 +161,7 @@ Target selection is here:
 
 \begin{figure}[H]
     \centering
-    \plotplaceholder{figures/hop_latency_breakdown.pdf}{Per-hop latency breakdown}
+    \plotplaceholder{report_figures/hop_latency_breakdown.pdf}{Per-hop latency breakdown}
     \caption{Stacked latency breakdown for the responsive hops along the paths
     to the five selected destinations.}
     \label{fig:hop-breakdown}
@@ -211,7 +176,7 @@ including how incremental (not cumulative) latency is computed:
 
 \begin{figure}[H]
     \centering
-    \plotplaceholder{figures/hop_count_vs_rtt.pdf}{Hop count versus RTT}
+    \plotplaceholder{report_figures/hop_count_vs_rtt.pdf}{Hop count versus RTT}
     \caption{Hop count versus destination RTT. Each point represents one of the
     five selected destination IP addresses.}
     \label{fig:hops-rtt}
@@ -222,48 +187,13 @@ The plotting code is available here:
 
 \subsection{Discussion}
 
-\textbf{Pattern in the stacked bar chart.} Across all four reached
-destinations, the first four hops -- our local network and ISP egress in
-West Lafayette -- are uniformly cheap (under 25\,ms) regardless of which
-destination is being traced, since that segment of the path is identical for
-every trace. Latency then accumulates almost entirely in one or two
-``long-haul'' hops rather than being spread evenly across the path. For
-example, the trace to Tokyo (89.187.160.1) jumps from 27\,ms at hop 9 to
-190\,ms at hop 10 -- a single 163\,ms increment, roughly 84\% of the entire
-194\,ms path RTT, almost certainly the trans-Pacific submarine link. The
-Copenhagen trace shows the same shape at hop 10 (a jump from the last known
-21\,ms up to 133\,ms), consistent with a trans-Atlantic hop. This confirms
-that a stacked-bar breakdown is genuinely more informative than the raw
-scatter alone: it shows \emph{where} along the path the latency is coming
-from, not just the total.
+The stacked bar chart shows that latency is concentrated in a few larger
+increments, usually in the long-haul part of the route, rather than being
+distributed evenly across hops. Non-responsive hops have no measured RTT and
+are omitted from the breakdown.
 
-Several hops in every trace returned \texttt{* * *} (fully non-responsive,
-most often hops 5--8). These are very likely backbone/peering routers that
-filter ICMP probes but still forward traffic normally -- the traceroute
-still completes to the destination in every reached case. Because these
-hops have no RTT of their own, whatever delay they actually contributed is
-unavoidably folded into the next \emph{responsive} hop's incremental value
-(see \texttt{incremental\_latencies()} above) -- a real limitation of
-traceroute-based measurement, not an error in the analysis, and part of why
-a single hop's bar segment can look larger than the physical link itself
-would suggest.
-
-\textbf{Hop count versus RTT.} The scatter plot shows a rough positive trend
--- more hops generally means more RTT, since a longer hop count is usually a
-signature of a physically longer path -- but the relationship is weak, not
-deterministic. Bata, GQ (105.235.237.2) and Port Moresby, PG
-(103.146.200.98) both take 22 hops, yet their RTTs differ by roughly 50\,ms
-(364\,ms vs. 312\,ms) -- a difference in specific routing (the Bata trace
-detours through several US-based addresses before reaching Africa) and link
-quality rather than hop count. Conversely, Tokyo (89.187.160.1) reaches in
-only 13 hops but has a higher RTT (195\,ms) than the 15-hop Copenhagen trace
-(137\,ms), because it is physically farther and crosses a longer undersea
-link. In short: hop count is a weak proxy for path length, but the
-\emph{physical distance and quality of the specific long-haul links
-traversed} -- not the number of hops -- is what actually determines RTT.
-This also mirrors what min/max RTT indicated in Part 1: RTT is set mainly by
-propagation delay over distance, with hop count and instantaneous network
-state (congestion, queuing at a particular router) contributing second-order
-variation on top of that floor.
+Hop count has only a weak positive relationship with RTT. Routes with the
+same number of hops can have different RTTs because the distance and quality
+of their links differ.
 
 \end{document}
