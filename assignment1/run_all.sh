@@ -11,11 +11,3 @@ fi
 
 PYTHON_BIN="$(pwd)/.venv/bin/python" ./part1/ping.sh
 .venv/bin/python part2/run.py --input ips.csv
-
-if command -v pdflatex >/dev/null 2>&1; then
-  pdflatex -interaction=nonstopmode -halt-on-error report.tex
-  pdflatex -interaction=nonstopmode -halt-on-error report.tex
-else
-  echo "Part 1 and Part 2 plots were generated, but pdflatex is not installed." >&2
-  exit 1
-fi
