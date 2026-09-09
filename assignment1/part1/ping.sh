@@ -2,7 +2,9 @@
 
 # Run relative to this script's own directory (part1/), regardless of where
 # it's invoked from -- matters now that this got moved out of the repo root.
-cd "$(dirname "$0")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 printf 'ip,continent,country,site,min_rtt_ms,avg_rtt_ms,max_rtt_ms,latitude,longitude\n' > results.csv
 
@@ -29,7 +31,7 @@ add_row () {
 
   coords=$(curl -s --max-time 10 \
     "http://ip-api.com/json/$ip?fields=status,lat,lon" |
-    python3 -c 'import json,sys; d=json.load(sys.stdin); print(str(d.get("lat","NA"))+","+str(d.get("lon","NA")))' \
+    "$PYTHON_BIN" -c 'import json,sys; d=json.load(sys.stdin); print(str(d.get("lat","NA"))+","+str(d.get("lon","NA")))' \
     2>/dev/null)
 
   [ -z "$coords" ] && coords="NA,NA"
@@ -53,5 +55,4 @@ do
   add_row "$ip" "$continent" "$country" "$site"
 done
 
-pip install matplotlib pandas
-python scatter.py
+"$PYTHON_BIN" scatter.py --input results.csv --output ../figures/distance_vs_rtt.pdf

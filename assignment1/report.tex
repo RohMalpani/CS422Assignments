@@ -15,8 +15,7 @@
 }
 
 % ---------- Replace these values ----------
-\newcommand{\studentname}{Your Name}
-\newcommand{\studentid}{Your Purdue ID}
+\newcommand{\studentname}{Annsh Navle, Rohan Malpani, Valmik Vyas}
 \newcommand{\repolink}{https://github.com/RohMalpani/CS422Assignments}
 
 % Use this command for links to specific files or line ranges in the repository.
@@ -35,7 +34,7 @@
 }
 
 \title{Assignment 1: Network Latencies, Ping, and Traceroute}
-\author{\studentname\\\studentid}
+\author{\studentname}
 \date{CS 422 -- Fall 2026}
 
 \begin{document}
@@ -60,32 +59,35 @@ experiments and plots are available at:
 
 \subsection{Method}
 
-% Describe:
-% 1. Where the destination IP addresses came from.
-% 2. How many ping packets were sent to each destination.
-% 3. How non-responsive destinations were handled.
-% 4. How latitude and longitude were obtained (for example, ip-api.com).
-% 5. How geographic distance was calculated.
-
 We tested every destination listed in the provided IP-address file, along with
-our own public IP address. [Describe the rest of the procedure here.]
+our own public IP address.  The script sent ten ICMP echo requests to each
+destination and recorded the minimum, average, and maximum RTT, using
+\texttt{NA} for non-responsive destinations.  It obtained latitude and
+longitude from \url{ip-api.com} and calculated great-circle distance with the
+Haversine formula using an Earth radius of 6,371 km.
 
 The code used to collect and process the ping measurements is available here:
-\codelink{ping collection and RTT calculation}{PATH/TO/FILE\#L1-L99}.
+\codelink{ping collection}{assignment1/part1/ping.sh\#L19-L20} and
+\codelink{RTT calculation}{assignment1/part1/ping.sh\#L22-L30}.
 
 \subsection{Results}
 
-% Either include the full table or summarize it and point to results.csv.
+The first five rows are shown below (showing 5/37 results only).  The complete
+data are available in \texttt{part1/results.csv}.
+
 \begin{table}[H]
     \centering
-    \caption{Example format for selected ping results.}
+    \caption{First five ping results.}
     \label{tab:ping-results}
     \begin{tabular}{lrrrr}
         \toprule
         Destination IP & Distance (km) & Min RTT (ms) & Avg RTT (ms) & Max RTT (ms) \\
         \midrule
-        % 192.0.2.1 & 0000 & 00.0 & 00.0 & 00.0 \\
-        \multicolumn{5}{c}{Add results here} \\
+        52.119.103.17  & 0      & 4.209   & 12.189  & 56.938  \\
+        160.242.19.254 & 11,498 & 298.388 & 319.136 & 367.114 \\
+        41.110.39.130  & 7,463  & 164.185 & 182.277 & 246.594 \\
+        213.158.175.240 & 9,918 & 168.356 & 222.082 & 356.200 \\
+        102.214.66.39  & 9,327  & 211.874 & 248.932 & 322.786 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -101,19 +103,44 @@ The code used to collect and process the ping measurements is available here:
 \end{figure}
 
 The plotting code is available here:
-\codelink{distance-versus-RTT plot}{PATH/TO/FILE\#L1-L99}.
+\codelink{distance-versus-RTT plot}{assignment1/part1/scatter.py\#L1-L74}.
 
 \subsection{Discussion}
 
-% Answer all parts explicitly:
-% - Does RTT generally increase with geographic distance?
-% - What does the minimum RTT tell you?
-% - What does the maximum RTT tell you?
-% - What network conditions explain variation or outliers?
+The measurements show a moderate positive relationship between geographic
+distance and RTT.  Among the 35 destinations with both valid geolocation and
+ping data, the Pearson correlation between distance and average RTT is
+approximately 0.57.  The correlations for minimum and maximum RTT are similar,
+at approximately 0.58 and 0.57, respectively.  Thus, more distant destinations
+generally have greater RTTs, but distance alone does not predict latency
+precisely.  Geographic distance is the great-circle distance between endpoints,
+whereas packets follow routes selected by network providers.  A route may be
+longer than the direct geographic path because of peering locations, submarine
+cable landing points, or indirect routing.  Every router along that route also
+adds processing and transmission delay.
 
-[Explain how distance relates to RTT. Discuss propagation delay, routing,
-congestion, queueing, processing delay, and any important outliers. Explain
-what the minimum and maximum RTT values convey.]
+The minimum RTT is the best estimate in this experiment of the path's baseline
+latency.  It reflects propagation delay plus the smallest observed amount of
+router processing, transmission, and queueing delay.  It does not measure
+distance directly.  Destinations at the same reported location can still have
+different minimum RTTs because their providers may use different routes.  For
+example, the four Tokyo-area servers are all about 10,304 km away, but their
+minimum RTTs range from approximately 135 ms to 186 ms.  This variation is
+consistent with differences in routing and network infrastructure rather than
+geographic distance.
+
+The maximum RTT describes the slowest of the ten ping replies and is more
+sensitive to the network state during the measurement.  Temporary congestion
+can increase queueing delay, and routers may deprioritize ICMP echo traffic.
+For example, \texttt{speedtestfl.telecom.mu} had a minimum RTT of approximately
+311 ms but a maximum of approximately 662 ms, a spread of about 351 ms.  The
+Singapore destination \texttt{96.45.38.22} ranged from approximately 203 ms to
+488 ms.  These large spreads cannot be explained by a change in physical
+distance during the test.  They indicate transient queueing, congestion, route
+changes, or variable ICMP processing.  Overall, distance establishes an
+important propagation-delay floor, while routing choices and short-term
+network conditions account for much of the scatter and the unusually high
+maximum RTT values.
 
 \section{Latency Breakdown}
 
@@ -238,10 +265,5 @@ This also mirrors what min/max RTT indicated in Part 1: RTT is set mainly by
 propagation delay over distance, with hop count and instantaneous network
 state (congestion, queuing at a particular router) contributing second-order
 variation on top of that floor.
-
-\section{Conclusion}
-
-[Briefly summarize the main relationship observed among geographic distance,
-hop count, and RTT.]
 
 \end{document}
