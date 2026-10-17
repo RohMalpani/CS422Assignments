@@ -1,0 +1,13 @@
+run_id,rep,host,port,site,country,algorithm,status,error,bytes_sent,server_bytes,duration_s
+20261017-181935,1,ping-90ms.online.net,5203,Paris,FR,cubic,ok,,466433106,466377416,62.33
+20261017-181935,1,69.48.237.66,30006,Istanbul,TR,cubic,ok,,929764886,929562624,61.19
+20261017-181935,1,iperf.fegis.nu,5205,Alvsjo,SE,cubic,ok,,815760720,815005696,61.57
+20261017-181935,1,phx.speedtest.clouvider.net,5200,Phoenix,US,cubic,ok,,2823255446,2823195720,60.75
+20261017-181935,1,185.180.12.40,5201,Vienna,AT,default,failed,server sent ACCESS_DENIED (busy or not allowed),,,0.27
+20261017-181935,1,spd-fisrv.hostkey.com,5202,Helsinki,FI,cubic,ok,,1009716798,1009639584,61.42
+20261017-181935,1,69.48.236.198,30004,Pune,IN,default,failed,socket error: [Errno 32] Broken pipe,,,2.88
+20261017-181935,1,spd-icsrv.hostkey.com,5207,Reykjavik,IS,cubic,ok,,1235379754,1235353600,61.2
+20261017-181935,1,209.40.123.215,30005,Plano,US,cubic,ok,,3305697896,3305373696,60.23
+20261017-181935,1,speedtest.mtl2.ca.leaseweb.net,5205,Montreal,CA,cubic,ok,,3386292632,3386114048,60.58
+20261017-181935,1,41.110.39.130,5201,Algiers,DZ,cubic,ok,,1158256496,1158256496,61.09
+20261017-181935,1,96.45.40.45,30008,London,GB,cubic,ok,,205108184,202637312,60.71

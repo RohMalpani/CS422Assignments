@@ -1,0 +1,11 @@
+site,host,port,algorithm,samples,min,median,mean,p95
+Algiers,41.110.39.130,5201,cubic,60,2.53,177.12,154.12,179.28
+Alvsjo,iperf.fegis.nu,5205,cubic,60,1.46,136.51,108.54,140.5
+Helsinki,spd-fisrv.hostkey.com,5202,cubic,60,1.58,158.46,134.46,181.32
+Istanbul,69.48.237.66,30006,cubic,60,1.33,153.8,123.7,155.75
+London,96.45.40.45,30008,cubic,60,7.09,20.86,26.83,62.53
+Montreal,speedtest.mtl2.ca.leaseweb.net,5205,cubic,60,303.85,453.87,451.07,461.82
+Paris,ping-90ms.online.net,5203,cubic,60,1.06,69.45,61.85,110.17
+Phoenix,phx.speedtest.clouvider.net,5200,cubic,60,225.01,378.25,376.04,392.22
+Plano,209.40.123.215,30005,cubic,60,293.76,436.4,440.43,472.52
+Reykjavik,spd-icsrv.hostkey.com,5207,cubic,60,12.85,167.07,164.46,170.12

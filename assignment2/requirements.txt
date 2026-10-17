@@ -1,1 +1,5 @@
 # Python dependencies for the Assignment 2 experiment and PDF plots.
+# The iperf3 client, TCP_INFO decoding and server selection use only the standard library.
+matplotlib>=3.7
+pandas>=2.0
+numpy>=1.24
