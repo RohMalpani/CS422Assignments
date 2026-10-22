@@ -12,3 +12,18 @@ Record algorithm, implementation, measurement, and evaluation decisions here wit
 
 - **Copy, don't import.** Each assignment folder stays self-contained, and a later edit in `assignment2/` (owned partly by teammates) can't silently break A3.
 - **Do not reuse A2's CUBIC/Reno/BBR measurements.** A3 requires the same destinations, duration (10 s) and sampling interval for all four algorithms; A2 used 60 s runs, and public-Internet conditions drift over days. All four algorithms are re-measured together, with test order rotated.
+
+## 2026-10-22 — Adaptive Delay/Loss AIMD kernel module
+
+Use ACK-derived delivery rate, minimum RTT, smoothed RTT, and TCP loss events
+to control `cwnd`. Low-delay growth is Reno-like, with a short two-segment
+probe only when delivery improves. Congestive loss halves `cwnd`; isolated loss
+with stable delivery uses a milder 15% reduction. This tests whether a
+bandwidth-aware loss response improves goodput without BBR's observed RTT
+inflation on several paths. The thresholds are provisional and must be tested
+against all three baselines; no performance improvement is assumed.
+
+The implementation registers `cs422_custom` through Linux
+`tcp_congestion_ops`. Keeping TCP's built-in retransmission and recovery
+mechanisms makes the module smaller and easier to audit. The Ubuntu VM runs
+kernel `6.8.0-147-generic`; build and runtime verification are still needed.
