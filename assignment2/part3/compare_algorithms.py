@@ -18,6 +18,7 @@ ALGORITHMS = ("cubic", "reno", "bbr")
 DEFAULT_REPS = 3
 DEFAULT_DURATION = 60
 DEFAULT_INTERVAL = 1.0
+DEFAULT_COOLDOWN = 1.0
 RUN_FIELDS = ("session_id", "run_id", "test_order", "rep", "host", "port", "site",
               "country", "requested_algorithm", "actual_algorithm", "status", "error",
               "bytes_sent", "server_bytes", "duration_s")
@@ -61,7 +62,7 @@ def ordered_algorithms(rep, destination_index):
     return ALGORITHMS[start:] + ALGORITHMS[:start]
 
 
-def collect_one(server, algorithm, rep, session, order, duration, interval,
+def collect_one(server, algorithm, rep, session, order, duration, interval, cooldown,
                 run_writer, sample_writer, run_file, sample_file):
     run_id = f"{session}-{order:04d}"
     row = dict(session_id=session, run_id=run_id, test_order=order, rep=rep,
@@ -96,6 +97,7 @@ def collect_one(server, algorithm, rep, session, order, duration, interval,
     print(f"{order:03d} rep {rep} {server.host}:{server.port} {algorithm}: "
           f"{row['status']} ({len(sampler.rows)} samples)"
           + (f" - {row['error']}" if row["error"] else ""), flush=True)
+    time.sleep(cooldown)
     return row["status"] == "ok"
 
 
@@ -129,7 +131,7 @@ def collect(args):
                 for algorithm in ordered_algorithms(1, len(chosen)):
                     order += 1
                     successes.append(collect_one(server, algorithm, 1, session, order,
-                                                 args.duration, args.interval, rw, sw,
+                                                 args.duration, args.interval, args.cooldown, rw, sw,
                                                  run_file, sample_file))
                 if all(successes):
                     chosen.append(server)
@@ -146,7 +148,7 @@ def collect(args):
                     for algorithm in ordered_algorithms(rep, index):
                         order += 1
                         collect_one(server, algorithm, rep, session, order, args.duration,
-                                    args.interval, rw, sw, run_file, sample_file)
+                                    args.interval, args.cooldown, rw, sw, run_file, sample_file)
         except KeyboardInterrupt:
             print("Interrupted; completed tests are saved.")
     print(f"Selected {len(chosen)}/{requested} destinations; {order} attempts. "
@@ -164,6 +166,8 @@ def build_parser():
     ap.add_argument("-n", type=int, default=10, help="destinations from --servers")
     ap.add_argument("--duration", type=int, default=DEFAULT_DURATION)
     ap.add_argument("--interval", type=float, default=DEFAULT_INTERVAL)
+    ap.add_argument("--cooldown", type=float, default=DEFAULT_COOLDOWN,
+                    help="seconds to wait between tests while a server becomes ready")
     ap.add_argument("--reps", type=int, default=DEFAULT_REPS)
     ap.add_argument("--max-failures", type=int, default=10)
     ap.add_argument("--seed", type=int, default=0)
@@ -174,8 +178,8 @@ def build_parser():
 def main():
     ap = build_parser()
     args = ap.parse_args()
-    if args.n < 1 or args.duration < 1 or args.interval <= 0 or args.reps < 2 or args.max_failures < 1:
-        ap.error("n, duration, max-failures > 0; interval > 0; reps >= 2 required")
+    if args.n < 1 or args.duration < 1 or args.interval <= 0 or args.cooldown < 0 or args.reps < 2 or args.max_failures < 1:
+        ap.error("n, duration, max-failures > 0; interval > 0; cooldown >= 0; reps >= 2 required")
     if len({(s.host, s.port) for s in args.destination}) != len(args.destination):
         ap.error("--destination entries must be unique")
     try:
