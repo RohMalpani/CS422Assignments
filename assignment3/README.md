@@ -2,11 +2,13 @@
 
 Scaffold for the custom Linux TCP congestion-control module and its four-algorithm evaluation.
 
-- `part1/kernel/`: kernel module source and build file.
-- `part1/run_experiments.py`: matched 10-second tests and raw measurements.
-- `part1/plot_results.py`: comparison plots and aggregate statistics.
+- `kernel/`: kernel module source and build file.
+- `client/`: iperf3 client, TCP_INFO/goodput sampling, and server selection, copied unchanged from `assignment2/part1/` (see `DECISIONS.md`).
+- `servers.csv`: iperf3 server list, copied from `assignment2/`.
+- `run_experiments.py`: matched 10-second tests and raw measurements.
+- `plot_results.py`: comparison plots and aggregate statistics.
 - `results/`: raw data and run configuration.
 - `plots/`: generated PDF figures.
 - `report.tex`: final report source.
 
-The implementation and experiment scripts are placeholders until the algorithm design is agreed on.
+The kernel module and the experiment/plot scripts are placeholders until the algorithm design is agreed on.
