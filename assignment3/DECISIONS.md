@@ -27,3 +27,31 @@ The implementation registers `cs422_custom` through Linux
 `tcp_congestion_ops`. Keeping TCP's built-in retransmission and recovery
 mechanisms makes the module smaller and easier to audit. The Ubuntu VM runs
 kernel `6.8.0-147-generic`; build and runtime verification are still needed.
+
+## 2026-10-22 — Building and loading on WSL2
+
+- **Build on WSL2 against Microsoft's kernel source, not Docker.** A module must match the running kernel's exact version and symbol checksums (`CONFIG_MODVERSIONS=y`). Containers share the host kernel, so Docker would not remove this requirement.
+- **Matching tag `linux-msft-wsl-6.6.87.2`.** WSL ships no kernel headers, and Ubuntu's header packages don't match Microsoft's kernel. Config comes from `/proc/config.gz` so it matches the running kernel.
+- **Full `make modules` once.** This generates `Module.symvers`, which `modpost` needs to attach symbol versions. `modules_prepare` alone doesn't produce it.
+- **Moved `.git` out of the kernel tree.** The shallow clone made `setlocalversion` append `+`, giving vermagic `...WSL2+`, which `insmod` rejects against `uname -r`.
+- **`.ko` files are not committed.** They are tied to one kernel and architecture; `.gitignore` excludes them and each person builds their own.
+- **Verified:** compiles without errors, loads with `insmod`, appears in `tcp_available_congestion_control`, and a socket accepts `TCP_CONGESTION=cs422_custom`. Performance is not yet measured.
+
+## 2026-10-22 — Experiment driver (`run_experiments.py`)
+
+- **Adapted from A2's driver, not rewritten.** Same server selection with bounded replacement, same per-sample CSV rows, so the A2 plotting and its explanations carry over. Changes: 10 s default, several algorithms per destination, test-order columns, config file.
+- **Every algorithm on the same destination, back to back.** The handout requires identical destinations, duration and sampling interval. Running all four in a row on one path minimizes drift in network conditions between them (A2 measured days apart).
+- **Rotated test order** (cyclic shift by destination index + repetition). Without this, the algorithm that always runs first or last could be systematically helped or hurt by server load or cache/queue state. `order_pos` and `seq` are logged so the order can be reported.
+- **Destination counts only if all four algorithms succeed in rep 1**; otherwise it is replaced (bounded). Keeps the four-way comparison on identical destinations. Failures in later reps are logged but not replaced, and reported.
+- **Host and port fixed per destination** (the same `Server` object is reused), so all algorithms and repetitions share an endpoint.
+- **A run is only "ok" if the socket reports the requested algorithm** (`getsockopt` read-back), guarding against silently measuring the default.
+- **Fail fast if an algorithm is unavailable.** WSL drops loaded modules when it restarts, which previously produced a run of misleading "No such file" failures.
+- **3 s pause between tests** so one test's queues/retransmits don't bleed into the next.
+- **Default 3 repetitions.** Single runs showed about 15 Mbps variation on one path, so one run per algorithm can't separate algorithms.
+
+## 2026-10-22 — Full run results (`results/`)
+
+- **Config:** 10 destinations x 3 reps x 4 algorithms, 10 s, 1 s sampling, seed 422, kernel 6.6.87.2-microsoft-standard-WSL2 (WSL2 NAT in the path). Test order and sequence are in `runs.csv` (`order_pos`, `seq`).
+- **Outcome:** 120 successful tests. 10 destinations were selected; 3 candidates were replaced (servers busy: `ACCESS_DENIED`, or refused). One tiny gap: `speed1.fiberby.dk` rep 3 `reno` timed out, so Reno has 29 tests vs 30 for the others.
+- **Analysis must filter to the destinations in `run_config.json`.** `speedtest.iway.ch` was rejected after one test succeeded (the others hit `ACCESS_DENIED`), so its partial rows remain in the raw CSVs but are not one of the 10 chosen destinations.
+- **Raw files kept unfiltered** so the failed attempts stay auditable; `run_log.txt` is the console log.
