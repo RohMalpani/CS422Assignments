@@ -8,3 +8,13 @@ __pycache__/
 *.log
 *.out
 *.toc
+
+# Kernel module build artifacts (kernel-specific; each person builds their own)
+*.ko
+*.o
+*.mod
+*.mod.c
+*.cmd
+.*.cmd
+Module.symvers
+modules.order

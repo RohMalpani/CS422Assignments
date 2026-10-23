@@ -1,0 +1,203 @@
+=== repetition 1/3 ===
+[1/10] 84.17.59.129:5201 (Milan, IT, DATAPACKET)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 64.68 Mbps
+    reno: ok, 10 samples, mean goodput 58.99 Mbps
+    bbr: ok, 10 samples, mean goodput 89.43 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 167.71 Mbps
+[2/10] 148.230.45.213:30009 (Madrid, ES, FortiSASE)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 178.99 Mbps
+    bbr: ok, 10 samples, mean goodput 49.21 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 114.27 Mbps
+    cubic: ok, 10 samples, mean goodput 86.01 Mbps
+[3/10] 102.130.68.171:9215 (Luanda, AO, Paratus)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 78.19 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 113.01 Mbps
+    cubic: ok, 10 samples, mean goodput 75.53 Mbps
+    reno: ok, 10 samples, mean goodput 113.14 Mbps
+[4/10] 96.45.42.156:30004 (Paris, FR, FortiSASE)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 95.37 Mbps
+    cubic: ok, 10 samples, mean goodput 88.05 Mbps
+    reno: ok, 10 samples, mean goodput 44.22 Mbps
+    bbr: ok, 10 samples, mean goodput 114.98 Mbps
+[5/10] speedtest.masnet.ec:5202 (Santa Ana, EC, MásNet)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 6 samples, mean goodput 0.21 Mbps
+    reno: ok, 10 samples, mean goodput 25.47 Mbps
+    bbr: ok, 10 samples, mean goodput 90.02 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 51.31 Mbps
+[6/10] 37.19.216.1:5201 (Houston, US, DATAPACKET)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: FAILED: control connect failed: [Errno 111] Connection refused
+    bbr: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    cs422_custom: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    cubic: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+[6/10] 59.56.22.40:5204 (Fuzhou, CN, China Telecom)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 38.56 Mbps
+    bbr: ok, 10 samples, mean goodput 65.92 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 78.97 Mbps
+    cubic: ok, 10 samples, mean goodput 44.28 Mbps
+[7/10] 185.152.67.2:5201 (Los Angeles, US, DATAPACKET)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 173.41 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 94.67 Mbps
+    cubic: ok, 10 samples, mean goodput 85.10 Mbps
+    reno: ok, 10 samples, mean goodput 147.96 Mbps
+[8/10] speedtest.iway.ch:5201 (Zürich, CH, iWay)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 159.60 Mbps
+    cubic: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    reno: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    bbr: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+[8/10] 185.93.2.193:5201 (Paris, FR, DATAPACKET)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    cubic: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    reno: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+    bbr: FAILED: server sent ACCESS_DENIED (busy or not allowed)
+[8/10] speed.mymanga.pro:9203 (Nairobi, KE, Mymanga)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 51.48 Mbps
+    cubic: ok, 10 samples, mean goodput 29.70 Mbps
+    reno: ok, 10 samples, mean goodput 25.03 Mbps
+    bbr: ok, 10 samples, mean goodput 37.61 Mbps
+[9/10] iperf.fegis.nu:5206 (Alvsjo, SE, Hostup)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 29.86 Mbps
+    reno: ok, 10 samples, mean goodput 31.44 Mbps
+    bbr: ok, 10 samples, mean goodput 32.70 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 35.78 Mbps
+[10/10] speed1.fiberby.dk:9205 (Copenhagen, DK, Fiberby)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 7 samples, mean goodput 10.14 Mbps
+    bbr: ok, 10 samples, mean goodput 168.43 Mbps
+    cs422_custom: ok, 5 samples, mean goodput 9.63 Mbps
+    cubic: ok, 3 samples, mean goodput 10.56 Mbps
+=== repetition 2/3 ===
+[1/10] 84.17.59.129:5201 (Milan, IT, DATAPACKET)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 129.95 Mbps
+    bbr: ok, 10 samples, mean goodput 162.42 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 160.25 Mbps
+    cubic: ok, 10 samples, mean goodput 164.12 Mbps
+[2/10] 148.230.45.213:30009 (Madrid, ES, FortiSASE)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 59.29 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 171.61 Mbps
+    cubic: ok, 10 samples, mean goodput 97.68 Mbps
+    reno: ok, 10 samples, mean goodput 82.06 Mbps
+[3/10] 102.130.68.171:9215 (Luanda, AO, Paratus)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 40.16 Mbps
+    cubic: ok, 10 samples, mean goodput 69.11 Mbps
+    reno: ok, 10 samples, mean goodput 18.22 Mbps
+    bbr: ok, 10 samples, mean goodput 58.92 Mbps
+[4/10] 96.45.42.156:30004 (Paris, FR, FortiSASE)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 10.58 Mbps
+    reno: ok, 10 samples, mean goodput 28.64 Mbps
+    bbr: ok, 10 samples, mean goodput 75.05 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 44.81 Mbps
+[5/10] speedtest.masnet.ec:5202 (Santa Ana, EC, MásNet)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 26.66 Mbps
+    bbr: ok, 10 samples, mean goodput 77.23 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 28.18 Mbps
+    cubic: ok, 10 samples, mean goodput 5.00 Mbps
+[6/10] 59.56.22.40:5204 (Fuzhou, CN, China Telecom)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 38.07 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 30.54 Mbps
+    cubic: ok, 10 samples, mean goodput 4.37 Mbps
+    reno: ok, 10 samples, mean goodput 30.95 Mbps
+[7/10] 185.152.67.2:5201 (Los Angeles, US, DATAPACKET)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 82.44 Mbps
+    cubic: ok, 10 samples, mean goodput 59.54 Mbps
+    reno: ok, 10 samples, mean goodput 40.83 Mbps
+    bbr: ok, 10 samples, mean goodput 111.26 Mbps
+[8/10] speed.mymanga.pro:9203 (Nairobi, KE, Mymanga)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 3.48 Mbps
+    reno: ok, 10 samples, mean goodput 6.90 Mbps
+    bbr: ok, 10 samples, mean goodput 34.28 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 18.45 Mbps
+[9/10] iperf.fegis.nu:5206 (Alvsjo, SE, Hostup)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 17.77 Mbps
+    bbr: ok, 10 samples, mean goodput 30.04 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 21.84 Mbps
+    cubic: ok, 10 samples, mean goodput 20.23 Mbps
+[10/10] speed1.fiberby.dk:9205 (Copenhagen, DK, Fiberby)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 8 samples, mean goodput 4.88 Mbps
+    cs422_custom: ok, 8 samples, mean goodput 5.25 Mbps
+    cubic: ok, 10 samples, mean goodput 8.81 Mbps
+    reno: ok, 4 samples, mean goodput 6.06 Mbps
+=== repetition 3/3 ===
+[1/10] 84.17.59.129:5201 (Milan, IT, DATAPACKET)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 82.50 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 32.85 Mbps
+    cubic: ok, 10 samples, mean goodput 31.77 Mbps
+    reno: ok, 10 samples, mean goodput 157.23 Mbps
+[2/10] 148.230.45.213:30009 (Madrid, ES, FortiSASE)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 61.40 Mbps
+    cubic: ok, 10 samples, mean goodput 88.87 Mbps
+    reno: ok, 10 samples, mean goodput 37.89 Mbps
+    bbr: ok, 10 samples, mean goodput 96.77 Mbps
+[3/10] 102.130.68.171:9215 (Luanda, AO, Paratus)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 70.63 Mbps
+    reno: ok, 10 samples, mean goodput 50.23 Mbps
+    bbr: ok, 10 samples, mean goodput 64.71 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 14.72 Mbps
+[4/10] 96.45.42.156:30004 (Paris, FR, FortiSASE)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 115.94 Mbps
+    bbr: ok, 10 samples, mean goodput 79.04 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 5.85 Mbps
+    cubic: ok, 10 samples, mean goodput 10.41 Mbps
+[5/10] speedtest.masnet.ec:5202 (Santa Ana, EC, MásNet)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 83.48 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 18.04 Mbps
+    cubic: ok, 10 samples, mean goodput 9.84 Mbps
+    reno: ok, 10 samples, mean goodput 20.02 Mbps
+[6/10] 59.56.22.40:5204 (Fuzhou, CN, China Telecom)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 37.47 Mbps
+    cubic: ok, 10 samples, mean goodput 4.51 Mbps
+    reno: ok, 10 samples, mean goodput 23.01 Mbps
+    bbr: ok, 10 samples, mean goodput 52.60 Mbps
+[7/10] 185.152.67.2:5201 (Los Angeles, US, DATAPACKET)
+  order: cubic -> reno -> bbr -> cs422_custom
+    cubic: ok, 10 samples, mean goodput 87.54 Mbps
+    reno: ok, 10 samples, mean goodput 74.74 Mbps
+    bbr: ok, 10 samples, mean goodput 118.22 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 64.89 Mbps
+[8/10] speed.mymanga.pro:9203 (Nairobi, KE, Mymanga)
+  order: reno -> bbr -> cs422_custom -> cubic
+    reno: ok, 10 samples, mean goodput 11.43 Mbps
+    bbr: ok, 10 samples, mean goodput 35.46 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 22.67 Mbps
+    cubic: ok, 10 samples, mean goodput 5.70 Mbps
+[9/10] iperf.fegis.nu:5206 (Alvsjo, SE, Hostup)
+  order: bbr -> cs422_custom -> cubic -> reno
+    bbr: ok, 10 samples, mean goodput 31.69 Mbps
+    cs422_custom: ok, 10 samples, mean goodput 16.44 Mbps
+    cubic: ok, 10 samples, mean goodput 13.60 Mbps
+    reno: ok, 10 samples, mean goodput 23.99 Mbps
+[10/10] speed1.fiberby.dk:9205 (Copenhagen, DK, Fiberby)
+  order: cs422_custom -> cubic -> reno -> bbr
+    cs422_custom: ok, 10 samples, mean goodput 6.45 Mbps
+    cubic: ok, 10 samples, mean goodput 32.20 Mbps
+    reno: FAILED: timed out: timed out
+    bbr: ok, 10 samples, mean goodput 157.48 Mbps
+
+Done: 10/10 destinations succeeded, 3 replaced (bound 10).

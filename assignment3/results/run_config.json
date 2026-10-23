@@ -1,0 +1,46 @@
+{
+  "run_id": "20261022-165632",
+  "args": {
+    "servers": "servers.csv",
+    "n": 10,
+    "duration": 10,
+    "interval": 1.0,
+    "reps": 3,
+    "algorithms": [
+      "cubic",
+      "reno",
+      "bbr",
+      "cs422_custom"
+    ],
+    "pause": 3.0,
+    "max_failures": 10,
+    "seed": 422,
+    "out_dir": "results"
+  },
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "destinations": [
+    "84.17.59.129:5201 (Milan, IT, DATAPACKET)",
+    "148.230.45.213:30009 (Madrid, ES, FortiSASE)",
+    "102.130.68.171:9215 (Luanda, AO, Paratus)",
+    "96.45.42.156:30004 (Paris, FR, FortiSASE)",
+    "speedtest.masnet.ec:5202 (Santa Ana, EC, M\u00e1sNet)",
+    "59.56.22.40:5204 (Fuzhou, CN, China Telecom)",
+    "185.152.67.2:5201 (Los Angeles, US, DATAPACKET)",
+    "speed.mymanga.pro:9203 (Nairobi, KE, Mymanga)",
+    "iperf.fegis.nu:5206 (Alvsjo, SE, Hostup)",
+    "speed1.fiberby.dk:9205 (Copenhagen, DK, Fiberby)"
+  ],
+  "destination_ports": {
+    "84.17.59.129": 5201,
+    "148.230.45.213": 30009,
+    "102.130.68.171": 9215,
+    "96.45.42.156": 30004,
+    "speedtest.masnet.ec": 5202,
+    "59.56.22.40": 5204,
+    "185.152.67.2": 5201,
+    "speed.mymanga.pro": 9203,
+    "iperf.fegis.nu": 5206,
+    "speed1.fiberby.dk": 9205
+  },
+  "rejected_destinations": 3
+}
