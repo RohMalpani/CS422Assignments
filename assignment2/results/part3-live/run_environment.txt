@@ -1,0 +1,15 @@
+Part 3 live baseline run
+Command: python part3/compare_algorithms.py -n 10 --duration 60 --interval 1 --reps 3 --out-dir results/part3-live
+Environment: Ubuntu 24.04 Multipass VM (cs422)
+Session ID: 20261022-124553-12d54dc3
+
+Kernel settings checked after the run on 2026-10-22 (not captured at launch):
+Linux kernel: 6.8.0-147-generic
+Available TCP congestion controls: reno cubic bbr
+Allowed TCP congestion controls: reno cubic bbr
+Default TCP congestion control: cubic
+
+The script selects the requested algorithm on each data socket and records
+the algorithm actually used in part3_runs.csv. It does not change the
+system-wide default. Any host-side steps used to enable BBR should be
+documented separately in the report.
