@@ -52,6 +52,7 @@ kernel `6.8.0-147-generic`; build and runtime verification are still needed.
 ## 2026-10-22 — Full run results (`results/`)
 
 - **Config:** 10 destinations x 3 reps x 4 algorithms, 10 s, 1 s sampling, seed 422, kernel 6.6.87.2-microsoft-standard-WSL2 (WSL2 NAT in the path). Test order and sequence are in `runs.csv` (`order_pos`, `seq`).
-- **Outcome:** 120 successful tests. 10 destinations were selected; 3 candidates were replaced (servers busy: `ACCESS_DENIED`, or refused). One tiny gap: `speed1.fiberby.dk` rep 3 `reno` timed out, so Reno has 29 tests vs 30 for the others.
+- **Outcome:** 120 planned tests on 10 selected destinations, of which 119 succeeded. Three candidate destinations were replaced (servers busy: `ACCESS_DENIED`, or refused). The one selected-test gap is `speed1.fiberby.dk` rep 3 `reno`, which timed out; Reno has 29 successful tests versus 30 for each other algorithm.
 - **Analysis must filter to the destinations in `run_config.json`.** `speedtest.iway.ch` was rejected after one test succeeded (the others hit `ACCESS_DENIED`), so its partial rows remain in the raw CSVs but are not one of the 10 chosen destinations.
 - **Raw files kept unfiltered** so the failed attempts stay auditable; `run_log.txt` is the console log.
+- **Trace coverage:** all 119 successful selected tests have TCP_INFO samples, but seven have fewer than the expected ten sampling intervals. This is disclosed in the report rather than silently dropping or treating them as complete ten-second traces.

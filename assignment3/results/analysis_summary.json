@@ -1,0 +1,62 @@
+{
+  "source_run_id": "20261022-165632",
+  "method": "Arithmetic mean of interval goodput and RTT within each successful run; then aggregate per-run means. Rejected candidate servers are excluded.",
+  "audit": {
+    "raw_attempts": 132,
+    "rejected_candidate_attempts": 12,
+    "selected_destinations": 10,
+    "selected_attempts": 120,
+    "selected_successes": 119,
+    "selected_failures": 1,
+    "selected_samples": 1161,
+    "short_successful_traces": 7,
+    "expected_samples_per_run": 10
+  },
+  "representative": {
+    "host": "96.45.42.156",
+    "port": 30004,
+    "selection": "closest to median pooled destination goodput among destinations with complete four-algorithm traces"
+  },
+  "algorithms": {
+    "cubic": {
+      "successful_runs": 30,
+      "mean_goodput_mbps": 43.732480388991036,
+      "median_goodput_mbps": 30.81589174008819,
+      "sd_goodput_mbps": 40.361616964085734,
+      "mean_rtt_ms": 162.6239388888889,
+      "median_rtt_ms": 127.97338333333332,
+      "sd_rtt_ms": 75.61418395919377,
+      "mean_retransmissions_per_run": 241.9
+    },
+    "reno": {
+      "successful_runs": 29,
+      "mean_goodput_mbps": 54.359846404160166,
+      "median_goodput_mbps": 31.43862293792687,
+      "sd_goodput_mbps": 49.34520228277481,
+      "mean_rtt_ms": 163.09726674876848,
+      "median_rtt_ms": 136.664,
+      "sd_rtt_ms": 79.65953605545785,
+      "mean_retransmissions_per_run": 315.3103448275862
+    },
+    "bbr": {
+      "successful_runs": 30,
+      "mean_goodput_mbps": 78.44190982788125,
+      "median_goodput_mbps": 76.14018288950788,
+      "sd_goodput_mbps": 44.256408988633325,
+      "mean_rtt_ms": 168.209605,
+      "median_rtt_ms": 139.0737,
+      "sd_rtt_ms": 72.92907641608262,
+      "mean_retransmissions_per_run": 2556.5333333333333
+    },
+    "cs422_custom": {
+      "successful_runs": 30,
+      "mean_goodput_mbps": 56.55039171454351,
+      "median_goodput_mbps": 38.81743849867143,
+      "sd_goodput_mbps": 48.76089991785353,
+      "mean_rtt_ms": 158.86311,
+      "median_rtt_ms": 129.10795,
+      "sd_rtt_ms": 75.59184364358435,
+      "mean_retransmissions_per_run": 353.73333333333335
+    }
+  }
+}
