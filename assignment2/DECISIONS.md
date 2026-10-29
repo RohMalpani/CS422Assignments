@@ -108,3 +108,25 @@ Format per entry: Context / Decision / Why / Code (see `assignment1/DECISIONS.md
 **Decision:** `run_all.py` reuses `run_experiments.build_parser()` plus `--plots-dir` and `--replot-only`; exits with a clear message on non-Linux. Python deps (matplotlib/pandas/numpy) installed in a venv (`~/cs422venv` in WSL) because WSL had no pip/pandas.
 **Why:** One parser means CLI options can't drift between the driver and the entry script. `--replot-only` lets us tweak plots without re-running 10+ minutes of tests on public servers. A venv avoids sudo/system-wide installs.
 **Code:** `run_all.py`, `requirements.txt`
+
+## 2026-10-25 — Final Part 3 report uses completed, matched evidence
+**Context:** The saved session includes failed candidates and incomplete final repetitions.
+**Decision:** Summary tables use only successful runs on the ten selected destinations (85 runs, 5,100 samples); primary algorithm comparisons use 28 complete destination/repetition triples (84 runs). Keep all failures in raw logs and retain the unmatched successful Tallinn Reno test in the complete summary.
+**Why:** This avoids zero-filling failures, mixing rejected candidate paths, or comparing unequal repetition sets without disclosure.
+**Code:** `part3/summarize_results.py`; generated `part3_per_run.csv`, `part3_matched_runs.csv`, and summary tables.
+
+## 2026-10-25 — Compact comparison figures and reproducible submission
+**Context:** All seven per-algorithm plots are required, and the older report described an obsolete shell loop.
+**Decision:** Keep the full seven-page PDFs, add shared-scale three-column time-series/scatter figures plus all-destination goodput, and generate summaries through `run_all.py`. Provide saved-data and fresh Docker/Linux commands; document missing historical environment details and unavailable Docker build validation.
+**Why:** The report embeds every required comparison while preserving readable standalone figures and honest provenance.
+**Code:** `part3/plot_comparison.py`, `part3/summarize_results.py`, `run_all.py`, `report.tex`.
+
+## 2026-10-25 — Align controller description and report structure with Assignment 3
+**Decision:** Check the Assignment 2 pseudocode against `assignment3/kernel/tcp_cs422.c`; document stale-evidence reset, valid-round gates, round-boundary cuts, RTT-reference refresh, ACK-credit handling, and timeout callback ordering. Use Assignment 3's report section order while retaining Assignment 2's own measurements and required plots.
+**Why:** The core design was shared, but the abbreviated pseudocode omitted implementation safeguards. Assignment 2 baseline results must remain distinct from Assignment 3 custom-controller measurements.
+
+## 2026-10-25 — Assignment-order report rewrite
+**Decision:** Follow Questions 1–3 with method, results, and discussion; use one-inch margins and the shared report title style, and place the seven Part 2 plots beside their interpretation. Retain all baseline tables, shared-scale comparison plots, controller safeguards, and reproduction details.
+**Why:** Makes each handout requirement easy to locate without changing measured evidence.
+
+Frame Question 3(b) as a suggested Adaptive Delay/Loss AIMD design motivated by baseline measurements; remove retrospective Assignment 3 implementation references while retaining the same control rules.

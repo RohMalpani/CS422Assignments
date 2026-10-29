@@ -42,10 +42,13 @@ def record_host_environment(results_dir):
 
 def main():
     ap = run_experiments.build_parser()
+    ap.description = "Assignment 2: collect and plot Parts 1-3, or rebuild from saved CSVs."
     ap.add_argument("--plots-dir", default="plots")
     ap.add_argument("--representative", help="Part 2 destination as HOST:PORT (default: median-goodput destination)")
     ap.add_argument("--replot-only", action="store_true", help="skip measurements, redraw from saved CSVs")
     ap.add_argument("--part3-out-dir", type=Path, help="Part 3 CSV directory (default: OUT-DIR/part3)")
+    ap.add_argument("--part3-plots-dir", type=Path, help="Part 3 figures (default: PLOTS-DIR/part3)")
+    ap.add_argument("--part3-representative", help="Part 3 representative HOST:PORT (default: first common destination)")
     ap.add_argument("--part3-reps", type=int, default=compare_algorithms.DEFAULT_REPS)
     ap.add_argument("--part3-cooldown", type=float, default=compare_algorithms.DEFAULT_COOLDOWN)
     ap.add_argument("--part3-destination", type=compare_algorithms.destination,
@@ -55,6 +58,7 @@ def main():
     if args.part3_reps < 2 or args.part3_cooldown < 0:
         ap.error("--part3-reps must be at least 2 and --part3-cooldown cannot be negative")
     part3_dir = args.part3_out_dir or Path(args.out_dir) / "part3"
+    part3_plots = args.part3_plots_dir or Path(args.plots_dir) / "part3"
 
     if not args.replot_only:
         if not sys.platform.startswith("linux"):
@@ -75,7 +79,8 @@ def main():
             part3_args.reps = args.part3_reps
             part3_args.cooldown = args.part3_cooldown
             compare_algorithms.collect(part3_args)
-        plot_comparison.make_comparison_outputs(part3_dir, args.plots_dir)
+        plot_comparison.make_comparison_outputs(part3_dir, part3_plots,
+                                               destination=args.part3_representative)
 
 
 if __name__ == "__main__":

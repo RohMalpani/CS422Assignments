@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 
 import pandas as pd
+from summarize_results import make_report_outputs
 
 BASE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE / "part2"))
@@ -55,6 +56,7 @@ def make_comparison_outputs(results_dir, plots_dir, destination=None):
         plot_tcp_stats(samples, output, algorithm=algorithm, destination=chosen,
                        axis_limits=limits)
         print(f"Saved {output} (7 pages)")
+    make_report_outputs(results_dir, plots_dir, chosen)
     return chosen
 
 
