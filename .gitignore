@@ -18,3 +18,6 @@ __pycache__/
 .*.cmd
 Module.symvers
 modules.order
+
+# Course lecture slides (instructor material; not redistributed in a public repo)
+assignment4/slides/*.pdf
