@@ -29,6 +29,8 @@ def best_topology(T, d, time_limit=None):
     """Return (lam, X, gap): X[u][v] is the optimal number of u -> v links for T,
     and gap is Gurobi's optimality gap (0 = proven optimal)."""
     T = np.asarray(T, dtype=float)
+    if T.sum() <= 0:  # no demand at all: every lam is feasible, so the MILP would be unbounded
+        raise ValueError("traffic matrix has no demand")
     n = len(T)
     arcs = [(u, v) for u in range(n) for v in range(n) if u != v]  # no self-loops
 

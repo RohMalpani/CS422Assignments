@@ -40,3 +40,16 @@ Record modelling, algorithm, and implementation decisions here with a brief rati
 - **Baselines that don't adapt**, to show what adaptation buys: (i) the MILP-optimal uniform topology, chosen once, and (ii) Part 1's de Bruijn. Both are scored with the same Part 1 LP, so the only difference is whether the topology was re-chosen for T.
 - **Results:** adaptive λ = 1 for integer permutation mixes, 0.92 for the real-weighted mix, 0.70 for uniform (= bound), and about 0.80 for random. The fixed uniform-optimal topology gets 0.50 on a permutation, and on random T it is 16% below adaptive on average. Every solve has gap ≤ 4e-5 and takes seconds. The whole run takes about 2 min.
 - **Example figure = real-weighted 3-permutation matrix.** It shows both effects at once: links follow demand (2.0 → 2 links) and integrality forces some two-hop relaying (1.2 → 1 link), which explains why λ < 1.
+
+## Independent audit fixes (2026-11-08)
+
+An auditor agent that saw only the spec, the slides, the code and the report (not this file) found no critical issues. Fixes:
+
+- **The Plesník–Znám claim was overstated.** It only rules out perfect Moore digraphs (n = 1+d+…+d^D). The bound *is* reachable for some (n, d): (8,4), (7,3), (9,4), (11,2), (11,5). The report and BOUND.md now say this.
+- **Added a true-optimum column for n ≤ 11** (`part1/optimum_small.py`, which reuses the Part 2 MILP). De Bruijn is 69–86% of the real optimum. The report now answers "why not use the MILP for Part 1?": it is an exponential search that is only practical for small n, not a construction for general n.
+- **Explained what d | n−1 is for:** it gives gcd(d, n) = 1, so u → d·u mod n is a permutation and the construction doesn't degenerate. This is also why de Bruijn does badly in Part 2: (8,4) has gcd 4, every even node shares one neighbour block, and there are **4** self-loops (the report had wrongly said 2).
+- **Corrected the explanation of why the circulant wins:** at 7/3 and 9/4 the circulant has *fewer* average hops, not more.
+- **Part 2 now checks optimality:** `run.py` asserts gap ≤ 1e-4. This immediately caught a 120 s time-limit hit on "skewed" (gap 2.7%, partly from CPU contention), so the time limit was raised to 600 s. The gap is stored unrounded in the CSV. `best_topology` rejects T = 0, which would be unbounded.
+- **The three-permutation test matrix now requires the permutations to be disjoint** (two of them collided in one row before). The results were regenerated, so Part 2 numbers changed slightly (3-perm λ = 0.938; random-matrix gain from adapting is 18%).
+- Qualified "uniform is the hardest" as an empirical observation, cited the generalized de Bruijn digraph (Reddy–Pradhan–Kuhl; Imase–Itoh), gave the reason for in-degree d, and fixed line-range links.
+- **Not changed:** the Part 1 construction itself (still de Bruijn, by choice: it is in the slides and easy to defend; the report frames it honestly against bound and optimum).

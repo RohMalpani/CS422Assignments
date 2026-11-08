@@ -30,17 +30,19 @@ Repository: \href{https://github.com/RohMalpani/CS422Assignments/tree/main/assig
 \item Upper bound $1/h^*(n,d)$:
 \href{\repo/part1/concurrent_flow.py\#L86-L95}{\texttt{concurrent\_flow.py}, lines 86--95}.
 \item Part 1 evaluation and figures (one-shot: \texttt{python run.py}):
-\href{\repo/part1/run.py\#L49-L143}{\texttt{run.py}, lines 49--143}.
+\href{\repo/part1/run.py\#L43-L151}{\texttt{run.py}, lines 43--151}.
+\item Part 1 true-optimum yardstick for small $n$ (uses the Part 2 MILP):
+\href{\repo/part1/optimum_small.py\#L26-L43}{\texttt{optimum\_small.py}, lines 26--43}.
 \item Part 2 MILP (Gurobi), whole model:
-\href{\repo/part2/topology_milp.py\#L28-L69}{\texttt{topology\_milp.py}, lines 28--69};
+\href{\repo/part2/topology_milp.py\#L28-L71}{\texttt{topology\_milp.py}, lines 28--71};
 variables and objective
-\href{\repo/part2/topology_milp.py\#L40-L43}{lines 40--43};
+\href{\repo/part2/topology_milp.py\#L42-L45}{lines 42--45};
 degree, conservation and capacity constraints
-\href{\repo/part2/topology_milp.py\#L45-L60}{lines 45--60}.
+\href{\repo/part2/topology_milp.py\#L47-L62}{lines 47--62}.
 \item Part 2 hose test matrices:
-\href{\repo/part2/run.py\#L45-L88}{\texttt{run.py}, lines 45--88};
+\href{\repo/part2/run.py\#L45-L89}{\texttt{run.py}, lines 45--89};
 evaluation against fixed topologies:
-\href{\repo/part2/run.py\#L91-L113}{lines 91--113}
+\href{\repo/part2/run.py\#L94-L117}{lines 94--117}
 (one-shot: \texttt{python run.py}).
 \end{itemize}
 
@@ -81,9 +83,12 @@ smallest possible average hop count $h^*(n,d)=\frac{1}{n-1}\sum_h h\,m_h$, so
 \lambda \;\le\; 1/\bar h(G) \;\le\; 1/h^*(n,d) \qquad\text{for every topology } G.
 \]
 For example, $n=8,d=4$ gives layers $(4,3)$, $h^*=10/7$, and $\lambda\le 0.7$.
-Directed graphs that meet this bound exactly do not exist for $d\ge2$ and
-diameter $\ge2$ (Plesn\'ik and Zn\'am, 1974), so the goal is a construction
-whose hop counts come close to it.
+Whether a topology can meet this bound exactly depends on $(n,d)$. It can for
+some: our Part~2 MILP reaches it for $n=8,d=4$, and also for $(7,3)$, $(9,4)$,
+$(11,2)$ and $(11,5)$ (Table~\ref{tab:p1}). It cannot when $n$ is a ``Moore order''
+$1+d+\dots+d^D$ with $d,D\ge2$ (e.g.\ $n=7,d=2$), because perfect directed Moore
+graphs do not exist there (Plesn\'ik and Zn\'am, 1974). So in general the goal is a
+construction whose hop counts come close to the bound.
 
 \subsection{Construction: generalized de Bruijn graph}
 We use the de Bruijn graph from the topologies lecture (``shift left, then
@@ -96,11 +101,22 @@ for u in 0 .. n-1:
 \end{verbatim}
 
 Shifting a base-$d$ label left is multiplying by $d$, and appending digit $k$ is
-adding $k$. When $n=d^m$ this is exactly the lecture's de Bruijn graph. Working
-mod $n$ is needed because the assignment's assumption ($d \mid n-1$) rules out
-$n=d^m$. Each node has $d$ outgoing links by construction, and also $d$
-incoming links: as $u$ ranges over $0..n-1$ and $k$ over $0..d-1$, the $dn$
-values $du+k$ hit every residue mod $n$ exactly $d$ times. Figure~\ref{fig:db}
+adding $k$. When $n=d^m$ this is exactly the lecture's de Bruijn graph. Taken mod
+$n$, it is the known \emph{generalized de Bruijn digraph} (Reddy, Pradhan and Kuhl,
+1980; Imase and Itoh, 1981), which works for any $n$.
+Each node has $d$ outgoing links by construction. It also has $d$ incoming links,
+because as $u$ ranges over $0..n-1$ and $k$ over $0..d-1$, the values $du+k$ are
+exactly the integers $0,\dots,dn-1$. Each residue mod $n$ therefore appears exactly
+$d$ times.
+
+\textbf{Where the assumption $d\mid n-1$ is used.} It gives $n\equiv1\pmod d$, so
+$\gcd(d,n)=1$, which means $d$ is invertible mod $n$. Then $u\mapsto du \bmod n$ is a
+permutation, so each node gets its own block of out-neighbours
+$\{du,\dots,du+d-1\}$. Without it the construction degenerates: for $n=8,d=4$
+($\gcd=4$), every even node has the same four out-neighbours $\{0,1,2,3\}$, every
+odd node has $\{4,\dots,7\}$, and 4 of the 32 ports are self-loops (we see the cost
+in Part~2). The assumption also rules out $n=d^m$, which is why the mod-$n$
+generalization is needed in the first place. Figure~\ref{fig:db}
 shows $n=9,d=2$.
 
 \begin{figure}[h]
@@ -118,9 +134,10 @@ d^m u + (k_1 d^{m-1} + k_2 d^{m-2} + \dots + k_m) \pmod n .
 \]
 The bracketed term can be any integer in $0,\dots,d^m-1$, the base-$d$ numbers
 with $m$ digits. Once $d^m\ge n$, these cover every residue mod $n$, so every
-target is reachable. This matches the breadth-first lower bound, which says no
-topology can reach all $n$ nodes in fewer than about $\log_d n$ hops. So de Bruijn's hop
-counts, and therefore its bound $1/\bar h$, are close to the best possible. For
+target is reachable. The breadth-first lower bound says no topology can reach
+all $n$ nodes in fewer than about $\log_d n$ hops, so de Bruijn's diameter is
+within one hop of the smallest possible: it grows logarithmically, as the best
+possible does. For
 comparison, the obvious ``ring with chords'' (simple circulant
 $u\to u+1,\dots,u+d$) reaches only $d$ new nodes per hop, so its average hop
 count grows linearly in $n$.
@@ -135,8 +152,15 @@ De Bruijn misses condition (b) in two ways:
 loads some links more than others. The LP compensates by detouring flow,
 which costs extra hops.
 \end{itemize}
-So we present de Bruijn as \emph{near-optimal with a quantified gap}, not as
-exactly optimal.
+So we present de Bruijn as a \emph{simple construction with logarithmic
+diameter and a measured gap}, not as exactly optimal. The gap is measured against
+both the bound and, where we can compute it, the true optimum.
+
+\textbf{Why not just use the Part~2 MILP?} The MILP finds the exact optimum, but it
+is an exponential-time search, not a construction. With the free Gurobi licence
+it is only practical for small $n$ (we solved $n\le11$), and $(9,2)$ already needs
+minutes. Part~1 asks for a rule that works for every $n$ and $d$. We use the MILP
+optimum as a yardstick instead (Table~\ref{tab:p1}).
 
 \subsection{Evaluation}
 For each $(n,d)$ with $d\mid n-1$ we computed the exact $\lambda$ with a Gurobi
@@ -154,44 +178,49 @@ applies to every topology.}
 
 \begin{table}[h]
 \centering\small
-\begin{tabular}{rrcccccc}
+\begin{tabular}{rrccccccc}
 \toprule
-$n$ & $d$ & bound $1/h^*$ & de Bruijn $\lambda$ & \% of bound & max hops & $\lceil\log_d n\rceil$ & circulant $\lambda$ \\
+$n$ & $d$ & bound $1/h^*$ & true opt. & de Bruijn $\lambda$ & \% of bound & max hops & $\lceil\log_d n\rceil$ & circulant $\lambda$ \\
 \midrule
- 7 & 2 & 0.600 & 0.375 & 63 & 3 & 3 & 0.429 \\
- 7 & 3 & 0.667 & 0.526 & 79 & 2 & 2 & 0.571 \\
- 9 & 2 & 0.500 & 0.348 & 70 & 4 & 4 & 0.333 \\
- 9 & 4 & 0.667 & 0.526 & 79 & 2 & 2 & 0.556 \\
-11 & 2 & 0.455 & 0.345 & 76 & 4 & 4 & 0.273 \\
-11 & 5 & 0.667 & 0.571 & 86 & 2 & 2 & 0.545 \\
-13 & 2 & 0.429 & 0.330 & 77 & 4 & 4 & 0.231 \\
-13 & 3 & 0.571 & 0.451 & 79 & 3 & 3 & 0.308 \\
-13 & 4 & 0.600 & 0.517 & 86 & 2 & 2 & 0.385 \\
-13 & 6 & 0.667 & 0.592 & 89 & 2 & 2 & 0.538 \\
-16 & 3 & 0.500 & 0.408 & 82 & 3 & 3 & 0.250 \\
-16 & 5 & 0.600 & 0.514 & 86 & 2 & 2 & 0.375 \\
-17 & 2 & 0.381 & 0.300 & 79 & 5 & 5 & 0.176 \\
-17 & 4 & 0.571 & 0.490 & 86 & 3 & 3 & 0.294 \\
-19 & 3 & 0.462 & 0.406 & 88 & 3 & 3 & 0.211 \\
+ 7 & 2 & 0.600 & 0.545 & 0.375 & 63 & 3 & 3 & 0.429 \\
+ 7 & 3 & 0.667 & 0.667 & 0.526 & 79 & 2 & 2 & 0.571 \\
+ 9 & 2 & 0.500 & 0.488--0.500 & 0.348 & 70 & 4 & 4 & 0.333 \\
+ 9 & 4 & 0.667 & 0.667 & 0.526 & 79 & 2 & 2 & 0.556 \\
+11 & 2 & 0.455 & 0.455 & 0.345 & 76 & 4 & 4 & 0.273 \\
+11 & 5 & 0.667 & 0.667 & 0.571 & 86 & 2 & 2 & 0.545 \\
+13 & 2 & 0.429 & -- & 0.330 & 77 & 4 & 4 & 0.231 \\
+13 & 3 & 0.571 & -- & 0.451 & 79 & 3 & 3 & 0.308 \\
+13 & 4 & 0.600 & -- & 0.517 & 86 & 2 & 2 & 0.385 \\
+13 & 6 & 0.667 & -- & 0.592 & 89 & 2 & 2 & 0.538 \\
+16 & 3 & 0.500 & -- & 0.408 & 82 & 3 & 3 & 0.250 \\
+16 & 5 & 0.600 & -- & 0.514 & 86 & 2 & 2 & 0.375 \\
+17 & 2 & 0.381 & -- & 0.300 & 79 & 5 & 5 & 0.176 \\
+17 & 4 & 0.571 & -- & 0.490 & 86 & 3 & 3 & 0.294 \\
+19 & 3 & 0.462 & -- & 0.406 & 88 & 3 & 3 & 0.211 \\
 \bottomrule
 \end{tabular}
-\caption{Part 1 results (\texttt{part1/results/part1.csv}).}
+\caption{Part 1 results (\texttt{part1/results/part1.csv}). ``True opt.'' is the
+best $\lambda$ over \emph{all} topologies, from the Part~2 MILP
+(\texttt{part1/optimum\_small.py}, \texttt{results/part1\_optimum.csv}). It is
+computable only for $n\le11$, and for $(9,2)$ only as a range (time limit).}
 \label{tab:p1}
 \end{table}
 
 \textbf{Findings.}
 \begin{itemize}
 \item De Bruijn reaches 63--89\% of the bound, which applies to every topology,
-and 79\% or more in 11 of 15 cases (the exceptions are $d=2$ with $n\le13$).
+and at least 78.7\% in 11 of 15 cases (the exceptions are $d=2$ with $n\le13$).
+\item Where the true optimum is computable ($n\le11$), de Bruijn reaches 69--86\%
+of it. That is the honest measure of how far it is from ``the best topology''.
 \item Its maximum hop count equals $\lceil\log_d n\rceil$ in every case,
 confirming the argument above.
 \item It beats the simple circulant in 12 of 15 cases, and the margin grows
 with $n$ (at $n=19,d=3$: 0.406 vs.\ 0.211). This is the logarithmic vs.\ linear
 hop-count difference.
 \item The circulant wins only for the smallest, densest cases ($7/2$, $7/3$,
-$9/4$). There, both graphs have nearly the same hop counts, and de Bruijn's
-two or more wasted self-loop ports out of only $nd$ total cost more than its
-shorter paths save.
+$9/4$). With so few nodes, the logarithmic advantage has not yet appeared: the
+circulant's average hop count is equal ($7/2$) or even lower ($7/3$, $9/4$). In
+addition, de Bruijn wastes 2--6 of only $nd$ ports on self-loops.
 \end{itemize}
 
 \section{Part 2: arbitrary hose traffic ($n=8$, $d=4$)}
@@ -243,16 +272,20 @@ achievable by \emph{any} such topology for this $T$. That is exactly ``the topol
 that maximizes concurrent flow for the given traffic matrix''.
 \item The model is linear: $\lambda T_{st}$ is a variable times a constant, and
 capacity compares flows with $x$. Only $x$ is integer, so it is a MILP. Gurobi
-proves optimality (we report its MIP gap).
+proves optimality up to its default tolerance (0.01\% MIP gap), and our script
+asserts this for every solve instead of accepting a time-limited answer.
 \item Self-loops are excluded because they cannot carry traffic. Parallel links
 are allowed and necessary: for $T=4\times$ a permutation, the optimum puts all 4
 links on each node's single destination and reaches $\lambda=1$.
 \item One commodity per \emph{source} (8 commodities) instead of per pair (56)
 gives the same $\lambda$, because a single-source flow decomposes into paths to
 each destination. This keeps the model at 56 integer and 449 continuous variables.
-\item \textbf{Upper bound.} For hose matrices with row sums equal to 4, total
-demand is $32$, which equals total capacity $8\cdot4$. So $\lambda\le1$,
-with equality only if every demand travels one hop.
+\item \textbf{Upper bound.} We test matrices whose row and column sums are
+exactly 4, the fully loaded case. Total demand is then $32$, which equals total
+capacity $8\cdot4$, so $\lambda\le1$, with equality only if every demand travels
+one hop. The hose set also allows smaller sums. The model handles those unchanged,
+and $\lambda$ can then exceed 1. The only exception is $T=0$, where every $\lambda$
+is feasible, so the code rejects it.
 \end{itemize}
 
 \subsection{Evaluation}
@@ -261,7 +294,7 @@ to 4 and a zero diagonal:
 \begin{itemize}
 \item a $4\times$ permutation;
 \item two permutations with weight 2;
-\item three permutations with real weights $(0.5,0.3,0.2)\times4$;
+\item three permutations with real weights $(0.5,0.3,0.2)\times4$, chosen so that no two send to the same destination from the same source;
 \item a skewed matrix (3 to one partner plus 1 spread uniformly);
 \item the uniform matrix;
 \item 10 random dense matrices (uniform random entries scaled by Sinkhorn
@@ -277,7 +310,8 @@ $n=8,d=4$ (Figure~\ref{fig:p2}).
 \centering
 \includegraphics[width=0.92\linewidth]{figures/part2_lambda.pdf}
 \caption{Concurrent flow per hose matrix: topology re-optimized for each $T$ vs.\
-two fixed topologies. All MILP solves reached a gap of at most $4\times10^{-5}$.}
+two fixed topologies. Every MILP solve was proven optimal (gap 0 within
+Gurobi's 0.01\% tolerance, checked in code).}
 \label{fig:p2}
 \end{figure}
 
@@ -287,12 +321,12 @@ two fixed topologies. All MILP solves reached a gap of at most $4\times10^{-5}$.
 \toprule
 Matrix & adaptive (MILP) & fixed: uniform-optimal & fixed: de Bruijn \\
 \midrule
-$4\times$ permutation & 1.000 & 0.500 & 0.429 \\
-2 permutations & 1.000 & 0.563 & 0.500 \\
-3 perms, real weights & 0.921 & 0.588 & 0.526 \\
-skewed & 0.803 & 0.560 & 0.464 \\
+$4\times$ permutation & 1.000 & 0.542 & 0.417 \\
+2 permutations & 1.000 & 0.625 & 0.450 \\
+3 perms, real weights & 0.938 & 0.676 & 0.476 \\
+skewed & 0.803 & 0.587 & 0.461 \\
 uniform & 0.700 & 0.700 & 0.500 \\
-random (10, mean / range) & 0.801 / 0.795--0.814 & 0.691 / 0.649--0.737 & 0.487 / 0.438--0.525 \\
+random (10, mean / range) & 0.799 / 0.775--0.812 & 0.678 / 0.610--0.701 & 0.509 / 0.487--0.541 \\
 \bottomrule
 \end{tabular}
 \caption{Part 2 results (\texttt{part2/results/part2.csv}).}
@@ -309,23 +343,26 @@ matrix (Figure~\ref{fig:adapt}), each demand of 2.0 gets 2 links, but demands of
 1.2 and 0.8 can only get 1 link each, since links are whole units and each node has
 only 4. Part of every 1.2 demand must then travel two hops, using spare capacity on
 other links (such as the 0.8 links). Two-hop flow costs double capacity, so
-$\lambda=0.921<1$.
-\item \textbf{Uniform is the hardest case.} The MILP reaches $\lambda=0.7$, exactly
-Part~1's bound $1/h^*(8,4)$, which shows that the bound is tight here. Random dense
-matrices land in between ($\approx0.80$).
+$\lambda=0.938<1$.
+\item \textbf{Uniform is the hardest of the matrices we tested.} This is an
+observation from our 15 samples, not a proof over the whole hose set. The MILP
+reaches $\lambda=0.7$, exactly Part~1's bound $1/h^*(8,4)$, so the bound is tight
+for $n=8,d=4$ (the optimal topology has average hop count exactly $10/7$). Random
+dense matrices land in between ($\approx0.80$).
 \item \textbf{Adapting pays off.} A fixed topology can be good for one kind of
 traffic but not for all. The uniform-optimal topology matches the MILP on uniform
-traffic but delivers only half of a permutation. On random matrices, adapting
-gives 16\% more $\lambda$ on average. De Bruijn, which is built for uniform traffic at large
-$n$, is worst at $n=8$. Two of its 32 ports are self-loops and its load is
-uneven (Part~1, Section~3.4), and at $n=8$ its short paths give little advantage.
+traffic but delivers only about half of a permutation (0.542). On random
+matrices, adapting gives 18\% more $\lambda$ on average. De Bruijn is worst here
+because $n=8,d=4$ violates Part~1's assumption $d\mid n-1$: $\gcd(4,8)=4$, so the
+construction degenerates (Section~3.2). Every even node has the same four
+out-neighbours, and 4 of the 32 ports are self-loops.
 \end{itemize}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.85\linewidth]{figures/part2_adapt_example.pdf}
 \caption{The topology follows the demand: three-permutation matrix (left) and
-the link counts the MILP chooses for it (right), $\lambda=0.921$.}
+the link counts the MILP chooses for it (right), $\lambda=0.938$.}
 \label{fig:adapt}
 \end{figure}
 

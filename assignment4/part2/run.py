@@ -67,7 +67,10 @@ def sinkhorn(A, total, iters=2000):
 
 def test_matrices(rng):
     n, d = N, D
-    p1, p2, p3 = derangement(rng, n), derangement(rng, n), derangement(rng, n)
+    while True:  # three permutations that never send to the same destination in any row
+        p1, p2, p3 = derangement(rng, n), derangement(rng, n), derangement(rng, n)
+        if all(len({p1[i], p2[i], p3[i]}) == 3 for i in range(n)):
+            break
     mats = [
         ("permutation", d * perm_matrix(p1)),                                   # one partner each
         ("2 permutations", 2 * perm_matrix(p1) + 2 * perm_matrix(p2)),          # integer mix
@@ -94,7 +97,8 @@ def evaluate(mats):
     print(f"fixed uniform-optimal topology: lam on uniform = {lam_u:.4f}")
     rows, chosen = [], {}
     for name, T in mats:
-        lam, X, gap = best_topology(T, D, time_limit=120)
+        lam, X, gap = best_topology(T, D, time_limit=600)
+        assert gap <= 1e-4, f"{name}: not solved to optimality (gap {gap})"  # Gurobi's default tolerance
         lam_check, _ = concurrent_flow(X, T)  # independent re-check with Part 1's LP
         assert abs(lam - lam_check) < 1e-5, (name, lam, lam_check)
         r = {
@@ -120,7 +124,8 @@ def write_csv(rows):
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
         for r in rows:
-            w.writerow({k: round(v, 4) if isinstance(v, float) else v for k, v in r.items()})
+            w.writerow({k: (f"{v:.1e}" if k == "mip_gap" else round(v, 4)) if isinstance(v, float) else v
+                        for k, v in r.items()})
     print("wrote", path)
 
 

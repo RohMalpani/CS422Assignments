@@ -70,9 +70,12 @@ above λ = 0.7.)
 - **λ_Moore(n,d)** is the yardstick. A topology is "best" if its λ, computed
   exactly by a linear program in Step 2, equals or comes closest to this
   bound.
-- Directed graphs that reach the Moore bound exactly do not exist for d ≥ 2
-  and diameter ≥ 2 (Plesník and Znám, 1974). So for general n and d, the goal
-  is a construction that gets close to it, with a good argument for why.
+- Whether the bound is reachable depends on (n, d). Perfect directed Moore
+  graphs (n exactly 1 + d + … + d^D, with d, D ≥ 2) do not exist (Plesník and
+  Znám, 1974), so for those n the bound can't be met (e.g. n = 7, d = 2: the
+  optimum is 0.545 < 0.6). For other n it sometimes can: the Part 2 MILP
+  reaches it for (8,4), (7,3), (9,4), (11,2), (11,5). For general n and d, the
+  goal is a construction that gets close, with a good argument for why.
 - Candidates trade off the two tightness conditions:
   - *short paths* (Kautz / de Bruijn) vs.
   - *perfect load balance* (symmetric circulant graphs).
