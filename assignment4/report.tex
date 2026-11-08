@@ -31,6 +31,17 @@ Repository: \href{https://github.com/RohMalpani/CS422Assignments/tree/main/assig
 \href{\repo/part1/concurrent_flow.py\#L86-L95}{\texttt{concurrent\_flow.py}, lines 86--95}.
 \item Part 1 evaluation and figures (one-shot: \texttt{python run.py}):
 \href{\repo/part1/run.py\#L49-L143}{\texttt{run.py}, lines 49--143}.
+\item Part 2 MILP (Gurobi), whole model:
+\href{\repo/part2/topology_milp.py\#L28-L69}{\texttt{topology\_milp.py}, lines 28--69};
+variables and objective
+\href{\repo/part2/topology_milp.py\#L40-L43}{lines 40--43};
+degree, conservation and capacity constraints
+\href{\repo/part2/topology_milp.py\#L45-L60}{lines 45--60}.
+\item Part 2 hose test matrices:
+\href{\repo/part2/run.py\#L45-L88}{\texttt{run.py}, lines 45--88};
+evaluation against fixed topologies:
+\href{\repo/part2/run.py\#L91-L113}{lines 91--113}
+(one-shot: \texttt{python run.py}).
 \end{itemize}
 
 \section{Model}
@@ -184,9 +195,148 @@ shorter paths save.
 \end{itemize}
 
 \section{Part 2: arbitrary hose traffic ($n=8$, $d=4$)}
-\emph{To be written.}
+We present a \textbf{mixed-integer linear program}. Given one traffic matrix
+$T\in\mathcal{T}_{\text{hose}}$, it chooses the topology and the routing
+together. The topology \emph{adapts} to $T$ because the program is solved again for
+each new $T$, as a reconfigurable (e.g.\ optical circuit-switched) network would
+pick a new set of circuits.
+
+\subsection{Formulation}
+Let $V=\{0,\dots,7\}$, $A=\{(u,v): u,v\in V,\ u\neq v\}$ and $d=4$.
+
+\textbf{Decision variables.}
+\begin{itemize}
+\item $x_{uv}\in\{0,1,\dots,d\}$ for $(u,v)\in A$: number of unit-capacity links
+from $u$ to $v$, i.e.\ \emph{the topology}. It is integer because a link cannot be
+half-built. Values above 1 are parallel links.
+\item $f^s_{uv}\ge0$ for $s\in V$, $(u,v)\in A$: traffic that originated at source
+$s$ and crosses link $u\to v$, i.e.\ \emph{the routing}.
+\item $\lambda\ge0$: the fraction of every demand that is delivered.
+\end{itemize}
+
+\textbf{Objective.} $\displaystyle\max\ \lambda$.
+
+\textbf{Constraints.}
+\begin{align}
+\textstyle\sum_{v\neq u} x_{uv} &= d \quad \forall u\in V,
+&\textstyle\sum_{u\neq v} x_{uv} &= d \quad \forall v\in V
+&& \text{(degree)}\\
+\textstyle\sum_{w\neq v} f^s_{vw}-\sum_{u\neq v} f^s_{uv} &=
+\begin{cases}\lambda\sum_t T_{st} & v=s\\ -\lambda T_{sv} & v\neq s\end{cases}
+&& \forall s,v\in V
+&& && \text{(conservation)}\\
+\textstyle\sum_{s\in V} f^s_{uv} &\le x_{uv} && \forall (u,v)\in A
+&& && \text{(capacity)}
+\end{align}
+
+\subsection{Intuition}
+\begin{itemize}
+\item With $x$ \emph{fixed}, constraints (2)--(3) are exactly the concurrent-flow
+LP we use in Part~1 to evaluate a topology. Source $s$ emits $\lambda$ times its
+total demand, each destination $v$ absorbs $\lambda T_{sv}$, and every other node
+forwards what it receives (net zero). Flow may be split and may take any number
+of hops.
+\item Making $x$ a \emph{variable}, limited only by the port budget (1), lets the
+solver search over every topology with $d$ outgoing and $d$ incoming links at
+the same time as the routing. The optimum is therefore the largest $\lambda$
+achievable by \emph{any} such topology for this $T$. That is exactly ``the topology
+that maximizes concurrent flow for the given traffic matrix''.
+\item The model is linear: $\lambda T_{st}$ is a variable times a constant, and
+capacity compares flows with $x$. Only $x$ is integer, so it is a MILP. Gurobi
+proves optimality (we report its MIP gap).
+\item Self-loops are excluded because they cannot carry traffic. Parallel links
+are allowed and necessary: for $T=4\times$ a permutation, the optimum puts all 4
+links on each node's single destination and reaches $\lambda=1$.
+\item One commodity per \emph{source} (8 commodities) instead of per pair (56)
+gives the same $\lambda$, because a single-source flow decomposes into paths to
+each destination. This keeps the model at 56 integer and 449 continuous variables.
+\item \textbf{Upper bound.} For hose matrices with row sums equal to 4, total
+demand is $32$, which equals total capacity $8\cdot4$. So $\lambda\le1$,
+with equality only if every demand travels one hop.
+\end{itemize}
+
+\subsection{Evaluation}
+We solved the MILP for 15 hose matrices, each with every row and column summing
+to 4 and a zero diagonal:
+\begin{itemize}
+\item a $4\times$ permutation;
+\item two permutations with weight 2;
+\item three permutations with real weights $(0.5,0.3,0.2)\times4$;
+\item a skewed matrix (3 to one partner plus 1 spread uniformly);
+\item the uniform matrix;
+\item 10 random dense matrices (uniform random entries scaled by Sinkhorn
+iteration to row/column sums of 4, seed 422).
+\end{itemize}
+Every MILP solution was re-scored by the independent Part~1 LP, and the two
+$\lambda$ values agree. As baselines that do \emph{not} adapt, we fixed two topologies and
+evaluated them on every matrix with the same LP: (i) the MILP-optimal topology
+for the uniform matrix, chosen once, and (ii) Part~1's de Bruijn graph for
+$n=8,d=4$ (Figure~\ref{fig:p2}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/part2_lambda.pdf}
+\caption{Concurrent flow per hose matrix: topology re-optimized for each $T$ vs.\
+two fixed topologies. All MILP solves reached a gap of at most $4\times10^{-5}$.}
+\label{fig:p2}
+\end{figure}
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+Matrix & adaptive (MILP) & fixed: uniform-optimal & fixed: de Bruijn \\
+\midrule
+$4\times$ permutation & 1.000 & 0.500 & 0.429 \\
+2 permutations & 1.000 & 0.563 & 0.500 \\
+3 perms, real weights & 0.921 & 0.588 & 0.526 \\
+skewed & 0.803 & 0.560 & 0.464 \\
+uniform & 0.700 & 0.700 & 0.500 \\
+random (10, mean / range) & 0.801 / 0.795--0.814 & 0.691 / 0.649--0.737 & 0.487 / 0.438--0.525 \\
+\bottomrule
+\end{tabular}
+\caption{Part 2 results (\texttt{part2/results/part2.csv}).}
+\label{tab:p2}
+\end{table}
+
+\textbf{Findings.}
+\begin{itemize}
+\item \textbf{Integer-structured traffic is served perfectly.} If $T$ is an integer
+combination of permutations, the MILP builds exactly those direct links (with
+parallel links where needed) and reaches $\lambda=1$, the upper bound.
+\item \textbf{Fractional traffic needs some relaying.} For the three-permutation
+matrix (Figure~\ref{fig:adapt}), each demand of 2.0 gets 2 links, but demands of
+1.2 and 0.8 can only get 1 link each, since links are whole units and each node has
+only 4. Part of every 1.2 demand must then travel two hops, using spare capacity on
+other links (such as the 0.8 links). Two-hop flow costs double capacity, so
+$\lambda=0.921<1$.
+\item \textbf{Uniform is the hardest case.} The MILP reaches $\lambda=0.7$, exactly
+Part~1's bound $1/h^*(8,4)$, which shows that the bound is tight here. Random dense
+matrices land in between ($\approx0.80$).
+\item \textbf{Adapting pays off.} A fixed topology can be good for one kind of
+traffic but not for all. The uniform-optimal topology matches the MILP on uniform
+traffic but delivers only half of a permutation. On random matrices, adapting
+gives 16\% more $\lambda$ on average. De Bruijn, which is built for uniform traffic at large
+$n$, is worst at $n=8$. Two of its 32 ports are self-loops and its load is
+uneven (Part~1, Section~3.4), and at $n=8$ its short paths give little advantage.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/part2_adapt_example.pdf}
+\caption{The topology follows the demand: three-permutation matrix (left) and
+the link counts the MILP chooses for it (right), $\lambda=0.921$.}
+\label{fig:adapt}
+\end{figure}
 
 \section{AI use}
-\emph{To be written} (see \texttt{AI\_USAGE.md}).
+We used Claude (Claude Code) interactively, one step at a time, with the group
+reviewing each step. It helped with: conceptual guidance (concurrent flow, the
+hop-count bound, mapping lecture slides to the problem), proposing and comparing
+candidate topologies (the group chose the slide-based de Bruijn construction),
+drafting the Gurobi LP/MILP code, evaluation scripts and figures, and drafting
+report text. We ran all code ourselves and validated it against hand-computed
+cases (complete graph, directed ring, permutation, uniform bound). Decisions and
+their rationale are logged in \texttt{DECISIONS.md}, and AI use in \texttt{AI\_USAGE.md}.
 
 \end{document}
