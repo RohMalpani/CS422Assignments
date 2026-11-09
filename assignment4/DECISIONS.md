@@ -53,3 +53,5 @@ An auditor agent that saw only the spec, the slides, the code and the report (no
 - **The three-permutation test matrix now requires the permutations to be disjoint** (two of them collided in one row before). The results were regenerated, so Part 2 numbers changed slightly (3-perm λ = 0.938; random-matrix gain from adapting is 18%).
 - Qualified "uniform is the hardest" as an empirical observation, cited the generalized de Bruijn digraph (Reddy–Pradhan–Kuhl; Imase–Itoh), gave the reason for in-degree d, and fixed line-range links.
 - **Not changed:** the Part 1 construction itself (still de Bruijn, by choice: it is in the slides and easy to defend; the report frames it honestly against bound and optimum).
+
+- **Asymptotic-optimality proof kept out of the report, in `part1/PROOF_NOTES.md` for exam prep.** For n = d^D, shift routing loads every link equally, so λ_dB ≥ (n−1)/(nD), and h* ≥ D − d/(d−1)², so de Bruijn reaches at least (1 − d/((d−1)²D))(1 − 1/n) of the optimum, which goes to 1. The report already argues via hop counts and measurements; the proof is backup for "why isn't it optimal?" questions.
