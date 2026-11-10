@@ -8,7 +8,7 @@ import numpy as np
 
 
 def de_bruijn(n, d):
-    """Generalized de Bruijn digraph (the submitted Part 1 topology).
+    """Generalized de Bruijn digraph (the base Part 1 topology).
 
     Node u links to (d*u + k) mod n for k = 0, 1, ..., d-1.
 
@@ -33,6 +33,25 @@ def de_bruijn(n, d):
     for u in range(n):
         for k in range(d):
             cap[u][(d * u + k) % n] += 1
+    return cap
+
+
+def loop_rewired_de_bruijn(n, d):
+    """Replace de Bruijn self-loops with a directed cycle through their nodes.
+
+    The nodes are ordered by label. Removing a self-loop takes one incoming and
+    one outgoing port from that node; the new cycle restores both. Thus every
+    node still has exactly d links in each direction, but no port is wasted on
+    a self-loop. This is a candidate topology, not a general optimality claim.
+    """
+    cap = de_bruijn(n, d)
+    loop_nodes = np.flatnonzero(np.diag(cap))
+    if len(loop_nodes) < 2 or np.any(np.diag(cap)[loop_nodes] != 1):
+        raise ValueError("expected at least two distinct single self-loops")
+    for u in loop_nodes:
+        cap[u, u] -= 1
+    for i, u in enumerate(loop_nodes):
+        cap[u, loop_nodes[(i + 1) % len(loop_nodes)]] += 1
     return cap
 
 
