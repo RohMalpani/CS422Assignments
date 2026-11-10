@@ -7,7 +7,7 @@ For each (n, d) with n-1 divisible by d:
 
 Outputs:
   part1/results/part1.csv
-  figures/part1_lambda_vs_bound.pdf   (lam vs. bound for every case)
+  figures/part1_lambda_vs_bound.pdf   (rewired lam vs. universal bound)
   figures/part1_debruijn_n9_d2.pdf    (drawing of an example topology)
   figures/part1_rewired_n9_d2.pdf     (drawing of the loop-rewired example)
 
@@ -84,17 +84,13 @@ def write_csv(rows):
 
 
 def plot_lambda(rows):
-    """Dot plot: one column per (n, d); the bound is a dash, topologies are dots."""
+    """Plot the submitted rewired candidate against the universal upper bound."""
     fig, ax = plt.subplots(figsize=(7.5, 3.4))
     x = np.arange(len(rows))
     ax.scatter(x, [r["lam_moore"] for r in rows], marker="_", s=260, linewidths=2,
                color=C_BOUND, label="Upper bound $1/h^*(n,d)$ (any topology)", zorder=3)
-    ax.scatter(x, [r["debruijn_lam"] for r in rows], s=42, color=C_DEBRUIJN,
-               edgecolors="white", linewidths=1, label="Generalized de Bruijn", zorder=4)
     ax.scatter(x, [r["rewired_lam"] for r in rows], s=42, color=C_REWIRED,
-               edgecolors="white", linewidths=1, label="Loop-rewired de Bruijn", zorder=5)
-    ax.scatter(x, [r["circulant_lam"] for r in rows], s=42, color=C_CIRCULANT,
-               edgecolors="white", linewidths=1, label="Simple circulant (baseline)", zorder=4)
+               edgecolors="white", linewidths=1, label="Loop-rewired de Bruijn", zorder=4)
     ax.set_xticks(x, [f"{r['n']},{r['d']}" for r in rows], fontsize=8)
     ax.set_xlabel("(n, d)", color=C_MUTED)
     ax.set_ylabel("Concurrent flow $\\lambda$", color=C_MUTED)
@@ -106,7 +102,7 @@ def plot_lambda(rows):
     for s in ("left", "bottom"):
         ax.spines[s].set_color("#bdbcb6")
     ax.tick_params(colors=C_MUTED)
-    ax.legend(frameon=False, fontsize=8, loc="upper left", ncol=2, bbox_to_anchor=(0, 1.18))
+    ax.legend(frameon=False, fontsize=8, loc="upper left", ncol=2, bbox_to_anchor=(0, 1.12))
     fig.tight_layout()
     path = os.path.join(FIGURES, "part1_lambda_vs_bound.pdf")
     fig.savefig(path)
