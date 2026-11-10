@@ -23,14 +23,15 @@
 \section{Submission and code map}
 Repository: \href{https://github.com/RohMalpani/CS422Assignments/tree/main/assignment4}{Assignment 4 folder on GitHub}.
 \begin{itemize}
-\item Part 1 topology (generalized de Bruijn):
-\href{\repo/part1/topologies.py\#L10-L36}{\texttt{topologies.py}, lines 10--36}.
+\item Part 1 base and loop-rewired constructions:
+\href{\repo/part1/topologies.py\#L10-L55}{\texttt{topologies.py}, lines 10--55}.
 \item Exact concurrent-flow LP:
 \href{\repo/part1/concurrent_flow.py\#L24-L69}{\texttt{concurrent\_flow.py}, lines 24--69}.
 \item Upper bound $1/h^*(n,d)$:
 \href{\repo/part1/concurrent_flow.py\#L86-L95}{\texttt{concurrent\_flow.py}, lines 86--95}.
 \item Part 1 evaluation and figures (one-shot: \texttt{python run.py}):
-\href{\repo/part1/run.py\#L43-L151}{\texttt{run.py}, lines 43--151}.
+\href{\repo/part1/run.py\#L51-L172}{\texttt{run.py}, lines 51--172}.
+Structural rewiring checks: \href{\repo/part1/test_topologies.py}{\texttt{test\_topologies.py}}.
 \item Part 1 true-optimum yardstick for small $n$ (uses the Part 2 MILP):
 \href{\repo/part1/optimum_small.py\#L26-L43}{\texttt{optimum\_small.py}, lines 26--43}.
 \item Part 2 MILP (Gurobi), whole model:
@@ -70,9 +71,9 @@ over all pairs:
 \lambda \;\le\; \frac{n(n-1)}{\sum_{i\neq j}\mathrm{dist}(i,j)} \;=\; \frac{1}{\bar h(G)},
 \]
 where $\bar h(G)$ is the average shortest-path hop count. For uniform traffic,
-maximizing $\lambda$ therefore means minimizing average hop count. The bound is
-reached exactly only if (a) all flow follows shortest paths and (b) every link
-is fully loaded, so load must be balanced as well.
+small average hop count is necessary for high $\lambda$, but not sufficient:
+routing load must also be balanced. The bound is reached only if (a) all flow
+follows shortest paths and (b) every link is fully loaded.
 
 \textbf{No topology has fewer hops than a full $d$-ary tree.} From any node, at
 most $d$ nodes are 1 hop away, at most $d^2$ are 2 hops away, and at most $d^h$
@@ -90,8 +91,8 @@ $1+d+\dots+d^D$ with $d,D\ge2$ (e.g.\ $n=7,d=2$), because perfect directed Moore
 graphs do not exist there (Plesn\'ik and Zn\'am, 1974). So in general the goal is a
 construction whose hop counts come close to the bound.
 
-\subsection{Construction: generalized de Bruijn graph}
-We use the de Bruijn graph from the topologies lecture (``shift left, then
+\subsection{Construction: loop-rewired generalized de Bruijn graph}
+We start with the de Bruijn graph from the topologies lecture (``shift left, then
 append one new digit''). Writing it as arithmetic makes it work for any $n$:
 
 \begin{verbatim}
@@ -116,18 +117,31 @@ $\{du,\dots,du+d-1\}$. Without it the construction degenerates: for $n=8,d=4$
 ($\gcd=4$), every even node has the same four out-neighbours $\{0,1,2,3\}$, every
 odd node has $\{4,\dots,7\}$, and 4 of the 32 ports are self-loops (we see the cost
 in Part~2). The assumption also rules out $n=d^m$, which is why the mod-$n$
-generalization is needed in the first place. Figure~\ref{fig:db}
-shows $n=9,d=2$.
+generalization is needed in the first place.
+
+\textbf{Rewiring wasted ports.} List the base graph's self-loop nodes in
+increasing order $s_0,\ldots,s_{q-1}$; remove each $s_i\to s_i$ and add
+$s_i\to s_{(i+1)\bmod q}$. In our $d\mid n-1$ setting, these are distinct single
+loops and $q\ge2$. Each affected node loses one incoming and one outgoing link,
+then gains one of each from the directed cycle. Thus every node still has
+exactly $d$ incoming and $d$ outgoing unit-capacity links, with no self-loops.
+The new edge may be parallel to an existing edge; the capacity matrix records
+both. This is a deterministic improvement heuristic, \emph{not} a proof of the
+best topology for arbitrary $(n,d)$. Figure~\ref{fig:db} shows both versions at
+$n=9,d=2$.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.42\linewidth]{figures/part1_debruijn_n9_d2.pdf}
-\caption{Generalized de Bruijn graph, $n=9$, $d=2$. Orange rings are self-loops.}
+\includegraphics[width=0.43\linewidth]{figures/part1_debruijn_n9_d2.pdf}\hfill
+\includegraphics[width=0.43\linewidth]{figures/part1_rewired_n9_d2.pdf}
+\caption{Base (left) and loop-rewired (right) de Bruijn graphs for $n=9,d=2$.
+Orange rings are wasted self-loop ports; green edges replace them.}
 \label{fig:db}
 \end{figure}
 
-\subsection{Why this topology: short paths}
-\textbf{Every node reaches every other in at most $\lceil\log_d n\rceil$ hops.}
+\subsection{Why start from de Bruijn: short paths}
+\textbf{In the base graph, every node reaches every other in at most
+$\lceil\log_d n\rceil$ hops.}
 After $m$ hops from $u$ with digits $k_1,\dots,k_m$ we are at
 \[
 d^m u + (k_1 d^{m-1} + k_2 d^{m-2} + \dots + k_m) \pmod n .
@@ -141,10 +155,12 @@ possible does. For
 comparison, the obvious ``ring with chords'' (simple circulant
 $u\to u+1,\dots,u+d$) reaches only $d$ new nodes per hop, so its average hop
 count grows linearly in $n$.
+This proves a bound for the base graph only. Rewiring changes edges, so we
+measure the new graph's hop counts rather than assume the proof still applies.
 
-\subsection{The gap to the bound}
+\subsection{The remaining gap to the bound}
 As the lecture notes, ``regular labels do not guarantee balanced traffic''.
-De Bruijn misses condition (b) in two ways:
+The base graph misses condition (b) in two ways:
 \begin{itemize}
 \item \textbf{Self-loops.} $du+k\equiv u$ can hold. It always holds at $u=0$
 ($k=0$) and at $u=n-1$ ($k=d-1$), and those ports carry nothing.
@@ -152,9 +168,9 @@ De Bruijn misses condition (b) in two ways:
 loads some links more than others. The LP compensates by detouring flow,
 which costs extra hops.
 \end{itemize}
-So we present de Bruijn as a \emph{simple construction with logarithmic
-diameter and a measured gap}, not as exactly optimal. The gap is measured against
-both the bound and, where we can compute it, the true optimum.
+Rewiring removes the first problem, but does not guarantee balanced load or
+optimal routing. We therefore measure its remaining gap against both the bound
+and, where computable, the true optimum. We do not claim exact optimality.
 
 \textbf{Why not just use the Part~2 MILP?} The MILP finds the exact optimum, but it
 is an exponential-time search, not a construction. With the free Gurobi licence
@@ -163,64 +179,66 @@ minutes. Part~1 asks for a rule that works for every $n$ and $d$. We use the MIL
 optimum as a yardstick instead (Table~\ref{tab:p1}).
 
 \subsection{Evaluation}
-For each $(n,d)$ with $d\mid n-1$ we computed the exact $\lambda$ with a Gurobi
+For each tested $(n,d)$ with $d\mid n-1$ we computed exact $\lambda$ by a Gurobi
 LP (one commodity per source, arc flows with conservation and capacity
-constraints) and compared it with the bound $1/h^*(n,d)$ and with the simple
-circulant baseline (Figure~\ref{fig:lambda}, Table~\ref{tab:p1}).
+constraints) for the base graph, its rewired variant, and the simple circulant.
+We compare them with $1/h^*(n,d)$ (Figure~\ref{fig:lambda}, Table~\ref{tab:p1}).
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/part1_lambda_vs_bound.pdf}
-\caption{Exact concurrent flow under uniform traffic versus the upper bound that
-applies to every topology.}
+\caption{Exact concurrent flow under uniform traffic for both de Bruijn variants
+and the circulant, versus the upper bound that applies to every topology.}
 \label{fig:lambda}
 \end{figure}
 
 \begin{table}[h]
-\centering\small
-\begin{tabular}{rrccccccc}
+\centering\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{rrcccccc}
 \toprule
-$n$ & $d$ & bound $1/h^*$ & true opt. & de Bruijn $\lambda$ & \% of bound & max hops & $\lceil\log_d n\rceil$ & circulant $\lambda$ \\
+$n$ & $d$ & bound $1/h^*$ & true opt. & base $\lambda$ & rewired $\lambda$ & rewired \% bound & circulant $\lambda$ \\
 \midrule
- 7 & 2 & 0.600 & 0.545 & 0.375 & 63 & 3 & 3 & 0.429 \\
- 7 & 3 & 0.667 & 0.667 & 0.526 & 79 & 2 & 2 & 0.571 \\
- 9 & 2 & 0.500 & 0.488--0.500 & 0.348 & 70 & 4 & 4 & 0.333 \\
- 9 & 4 & 0.667 & 0.667 & 0.526 & 79 & 2 & 2 & 0.556 \\
-11 & 2 & 0.455 & 0.455 & 0.345 & 76 & 4 & 4 & 0.273 \\
-11 & 5 & 0.667 & 0.667 & 0.571 & 86 & 2 & 2 & 0.545 \\
-13 & 2 & 0.429 & -- & 0.330 & 77 & 4 & 4 & 0.231 \\
-13 & 3 & 0.571 & -- & 0.451 & 79 & 3 & 3 & 0.308 \\
-13 & 4 & 0.600 & -- & 0.517 & 86 & 2 & 2 & 0.385 \\
-13 & 6 & 0.667 & -- & 0.592 & 89 & 2 & 2 & 0.538 \\
-16 & 3 & 0.500 & -- & 0.408 & 82 & 3 & 3 & 0.250 \\
-16 & 5 & 0.600 & -- & 0.514 & 86 & 2 & 2 & 0.375 \\
-17 & 2 & 0.381 & -- & 0.300 & 79 & 5 & 5 & 0.176 \\
-17 & 4 & 0.571 & -- & 0.490 & 86 & 3 & 3 & 0.294 \\
-19 & 3 & 0.462 & -- & 0.406 & 88 & 3 & 3 & 0.211 \\
+ 7 & 2 & 0.600 & 0.545 & 0.375 & 0.429 & 71 & 0.429 \\
+ 7 & 3 & 0.667 & 0.667 & 0.526 & 0.632 & 95 & 0.571 \\
+ 9 & 2 & 0.500 & 0.488--0.500 & 0.348 & 0.387 & 77 & 0.333 \\
+ 9 & 4 & 0.667 & 0.667 & 0.526 & 0.606 & 91 & 0.556 \\
+11 & 2 & 0.455 & 0.455 & 0.345 & 0.370 & 81 & 0.273 \\
+11 & 5 & 0.667 & 0.667 & 0.571 & 0.625 & 94 & 0.545 \\
+13 & 2 & 0.429 & -- & 0.330 & 0.349 & 81 & 0.231 \\
+13 & 3 & 0.571 & -- & 0.451 & 0.505 & 88 & 0.308 \\
+13 & 4 & 0.600 & -- & 0.517 & 0.567 & 94 & 0.385 \\
+13 & 6 & 0.667 & -- & 0.592 & 0.629 & 94 & 0.538 \\
+16 & 3 & 0.500 & -- & 0.408 & 0.451 & 90 & 0.250 \\
+16 & 5 & 0.600 & -- & 0.514 & 0.552 & 92 & 0.375 \\
+17 & 2 & 0.381 & -- & 0.300 & 0.318 & 83 & 0.176 \\
+17 & 4 & 0.571 & -- & 0.490 & 0.531 & 93 & 0.294 \\
+19 & 3 & 0.462 & -- & 0.406 & 0.439 & 95 & 0.211 \\
 \bottomrule
 \end{tabular}
 \caption{Part 1 results (\texttt{part1/results/part1.csv}). ``True opt.'' is the
 best $\lambda$ over \emph{all} topologies, from the Part~2 MILP
 (\texttt{part1/optimum\_small.py}, \texttt{results/part1\_optimum.csv}). It is
-computable only for $n\le11$, and for $(9,2)$ only as a range (time limit).}
+computed only for $n\le11$, and for $(9,2)$ only as a range (time limit).
+Percentages use unrounded LP and bound values.}
 \label{tab:p1}
 \end{table}
 
 \textbf{Findings.}
 \begin{itemize}
-\item De Bruijn reaches 63--89\% of the bound, which applies to every topology,
-and at least 78.7\% in 11 of 15 cases (the exceptions are $d=2$ with $n\le13$).
-\item Where the true optimum is computable ($n\le11$), de Bruijn reaches 69--86\%
-of it. That is the honest measure of how far it is from ``the best topology''.
-\item Its maximum hop count equals $\lceil\log_d n\rceil$ in every case,
-confirming the argument above.
-\item It beats the simple circulant in 12 of 15 cases, and the margin grows
-with $n$ (at $n=19,d=3$: 0.406 vs.\ 0.211). This is the logarithmic vs.\ linear
-hop-count difference.
-\item The circulant wins only for the smallest, densest cases ($7/2$, $7/3$,
-$9/4$). With so few nodes, the logarithmic advantage has not yet appeared: the
-circulant's average hop count is equal ($7/2$) or even lower ($7/3$, $9/4$). In
-addition, de Bruijn wastes 2--6 of only $nd$ ports on self-loops.
+\item Rewiring improves $\lambda$ in all 15 tested cases and removes all
+self-loops. The rewired graph reaches 71--95\% of the universal bound, versus
+63--89\% for the base graph. At $(9,2)$, for example, $\lambda$ rises from
+0.348 to 0.387; this is still below the proven lower bound 0.488 on the optimum.
+\item Where the true optimum is proven ($n\le11$, excluding $(9,2)$), the
+rewired graph still falls short: at $(7,2)$ it gets 0.429 versus 0.545, while
+at $(7,3)$ it gets 0.632 versus 0.667. Removing loops alone does not solve
+the load-balancing problem.
+\item The rewired graph's measured maximum hop count equals
+$\lceil\log_d n\rceil$ in all 15 cases, though the base graph proof above does
+not guarantee this for arbitrary parameters after rewiring.
+\item It beats the simple circulant in 14 cases and ties at $(7,2)$. At
+$(19,3)$ it gets 0.439 versus 0.211. The measured advantage is consistent
+with its shorter paths, but routing balance also affects $\lambda$.
 \end{itemize}
 
 \section{Part 2: arbitrary hose traffic ($n=8$, $d=4$)}
@@ -303,7 +321,8 @@ iteration to row/column sums of 4, seed 422).
 Every MILP solution was re-scored by the independent Part~1 LP, and the two
 $\lambda$ values agree. As baselines that do \emph{not} adapt, we fixed two topologies and
 evaluated them on every matrix with the same LP: (i) the MILP-optimal topology
-for the uniform matrix, chosen once, and (ii) Part~1's de Bruijn graph for
+for the uniform matrix, chosen once, and (ii) the \emph{original} (not rewired)
+Part~1 de Bruijn graph for
 $n=8,d=4$ (Figure~\ref{fig:p2}).
 
 \begin{figure}[h]
@@ -367,13 +386,14 @@ the link counts the MILP chooses for it (right), $\lambda=0.938$.}
 \end{figure}
 
 \section{AI use}
-We used Claude (Claude Code) interactively, one step at a time, with the group
-reviewing each step. It helped with: conceptual guidance (concurrent flow, the
-hop-count bound, mapping lecture slides to the problem), proposing and comparing
-candidate topologies (the group chose the slide-based de Bruijn construction),
-drafting the Gurobi LP/MILP code, evaluation scripts and figures, and drafting
-report text. We ran all code ourselves and validated it against hand-computed
-cases (complete graph, directed ring, permutation, uniform bound). Decisions and
-their rationale are logged in \texttt{DECISIONS.md}, and AI use in \texttt{AI\_USAGE.md}.
+Claude (Claude Code) was used interactively during the initial implementation
+for conceptual guidance (concurrent flow, the hop-count bound, mapping lecture
+slides to the problem), proposing and comparing candidate topologies, and
+drafting the Gurobi LP/MILP code, evaluation scripts, figures, and report text.
+Codex assisted with the later loop-rewiring implementation, structural tests,
+LP reruns, figure regeneration, and this report update. The code was validated
+against hand-computed cases (complete graph, directed ring, permutation,
+uniform bound) and the measured data in the repository. Decisions and rationale
+are logged in \texttt{DECISIONS.md}, and AI use in \texttt{AI\_USAGE.md}.
 
 \end{document}
